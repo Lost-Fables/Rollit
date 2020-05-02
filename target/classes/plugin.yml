@@ -1,0 +1,23 @@
+name: Rollit
+version: 1.0-SNAPSHOT
+main: net.lostfables.lughgk.rollit.Rollit
+api-version: 1.13
+depend: [Tythan]
+commands:
+  roll:
+    description: Rolls some dice
+    aliases: [dice, rolldice, roll_dice, rd]
+    permission: rollit.roll
+    permission-message: §c[Rollit] You do not have permission to access this command.
+    usage: |
+      §cUsage: /roll <Number of Dice>d<Die Face><Operator><Modifier>
+      §cExample: /roll 1d20+5
+  show:
+    description: Displays an item in chat.
+    aliases: [item, showitem, display]
+    permission: rollit.show
+    permission-message: §c[Rollit] You do not have permission to access this command.
+    usage: |
+      §cUsage: /show or /show <player>
+      §cExample: /show
+      §cExample: /show Lugh__
