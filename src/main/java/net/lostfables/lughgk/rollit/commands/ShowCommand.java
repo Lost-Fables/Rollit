@@ -75,7 +75,7 @@ public class ShowCommand implements CommandExecutor {
         try {
             itemInHand = player.getInventory().getItemInMainHand();
 
-            if (itemInHand.getItemMeta().getDisplayName() == "") {
+            if (itemInHand.getItemMeta().getDisplayName().equals("")) {
                 itemName = itemInHand.getType().toString() + " x" + itemInHand.getAmount();
             } else {
                 itemName = itemInHand.getItemMeta().getDisplayName() + " x" + itemInHand.getAmount();
