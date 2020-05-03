@@ -108,18 +108,18 @@ public class RollCommand implements CommandExecutor {
         String rollName = ChatColor.WHITE + player.getName() + ChatColor.DARK_AQUA + " rolled " + ChatColor.WHITE + rollString;
         ChatBuilder chatItem = new ChatBuilder();
 
-        String rolls = "";
+        StringBuilder rolls = new StringBuilder();
         int total = 0;
         for(int index = 0; index < numOfDice(rollString); index++) {
             int roll = (int) Math.floor(Math.random() * (dieFace(rollString) - 1 + 1) + 1);
-            rolls += ChatColor.DARK_AQUA + "[" + ChatColor.WHITE + roll + ChatColor.DARK_AQUA + "] ";
+            rolls.append(ChatColor.DARK_AQUA).append("[").append(ChatColor.WHITE).append(roll).append(ChatColor.DARK_AQUA).append("] ");
             total += roll;
         }
         if(solver(total, rollString) == null) {
             player.sendMessage(ChatColor.RED + "[Rollit] That is the incorrect syntax for a roll!");
             return;
         }
-        lore.add(rolls);
+        lore.add(rolls.toString());
         lore.add(ChatColor.DARK_AQUA + "Total: " + ChatColor.WHITE + solver(total, rollString));
 
         ItemStack is = new ItemStack(Material.STONE);

@@ -36,8 +36,8 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm-commons:7.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm-tree:7.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ow2.asm:asm-analysis:7.1" level="project" />
-    <orderEntry type="library" name="Maven: co.lotc:tythan-bukkit:0.7.1" level="project" />
-    <orderEntry type="library" name="Maven: co.lotc:tythan-common:0.7.1" level="project" />
+    <orderEntry type="library" name="Maven: co.lotc:tythan-bukkit:0.7.2" level="project" />
+    <orderEntry type="library" name="Maven: co.lotc:tythan-common:0.7.2" level="project" />
     <orderEntry type="library" name="Maven: com.comphenix.protocol:ProtocolLib:4.5.0" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib-nodep:3.2.5" level="project" />
     <orderEntry type="library" name="Maven: com.comphenix.executors:BukkitExecutors:1.1-SNAPSHOT" level="project" />
