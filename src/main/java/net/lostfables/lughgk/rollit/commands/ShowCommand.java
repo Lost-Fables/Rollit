@@ -42,7 +42,7 @@ public class ShowCommand implements CommandExecutor {
 
             if(args.length == 0) {
                 players = (List<Player>) player.getLocation().getNearbyPlayers(plugin.getShowDistance());
-            } else if(args.length == 1) {
+            } else {
                 if(plugin.getServer().getPlayer(PlayerUtil.getPlayerUUID(args[0])) != null) {
                     reciever = plugin.getServer().getPlayer(PlayerUtil.getPlayerUUID(args[0]));
                 } else {
