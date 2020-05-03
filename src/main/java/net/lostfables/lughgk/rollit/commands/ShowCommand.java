@@ -1,19 +1,21 @@
 package net.lostfables.lughgk.rollit.commands;
 
-import co.lotc.core.bukkit.util.ChatBuilder;
 import co.lotc.core.bukkit.util.PlayerUtil;
+import co.lotc.core.util.MessageUtil;
 import net.lostfables.lughgk.rollit.Rollit;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ShowCommand implements CommandExecutor {
 
@@ -37,7 +39,6 @@ public class ShowCommand implements CommandExecutor {
         if(sender instanceof Player) {
             Player player = (Player) sender;
             Player reciever = null;
-            ChatBuilder chatItem = showItem(player);
             List<Player> players = new ArrayList<>();
 
             if(args.length == 0) {
@@ -56,7 +57,7 @@ public class ShowCommand implements CommandExecutor {
             }
 
             for(Player p : players) {
-                chatItem.send(p);
+                p.sendMessage(showItem(player));
             }
             return true;
 
@@ -66,38 +67,51 @@ public class ShowCommand implements CommandExecutor {
         return false;
     }
 
-    public ChatBuilder showItem(Player player) {
+    public TextComponent showItem(Player player) {
+
+        TextComponent chatItem = new TextComponent();
         ItemStack itemInHand = null;
-
-
+        List<String> lines = new ArrayList<>();
+        Map<Enchantment, Integer> enchants = new HashMap<>();
         String itemName;
+        int amount = 1;
 
         try {
             itemInHand = player.getInventory().getItemInMainHand();
 
             if (itemInHand.getItemMeta().getDisplayName().equals("")) {
-                itemName = itemInHand.getType().toString() + " x" + itemInHand.getAmount();
+                itemName = itemInHand.getType().toString();
+                enchants.putAll(itemInHand.getItemMeta().getEnchants());
+                lines = itemInHand.getLore();
+                amount = itemInHand.getAmount();
+
             } else {
-                itemName = itemInHand.getItemMeta().getDisplayName() + " x" + itemInHand.getAmount();
+                itemName = itemInHand.getItemMeta().getDisplayName();
+                enchants.putAll(itemInHand.getItemMeta().getEnchants());
+                lines.addAll(itemInHand.getLore());
+                amount = itemInHand.getAmount();
             }
 
         } catch(NullPointerException e) {
-            itemInHand = new ItemStack(Material.STONE);
-            ItemMeta itemInHandMeta = itemInHand.getItemMeta();
-            List<String> lore = new ArrayList<>();
-            itemInHandMeta.setDisplayName(ChatColor.DARK_GRAY + player.getDisplayName() + "'s hand");
-            lore.add(ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + "Very Common " + ChatColor.GRAY + "| Natural | " + ChatColor.DARK_GRAY + "Mundane | Miscellanea" + ChatColor.GRAY + "]");
-            lore.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "This is " + player.getDisplayName() + "'s empty hand.");
-            itemInHandMeta.setLore(lore);
-            itemInHand.setItemMeta(itemInHandMeta);
+            itemName =  ChatColor.DARK_GRAY + player.getDisplayName() + "'s hand";
+            lines.add(ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + "Very Common " + ChatColor.GRAY + "| Natural | " + ChatColor.DARK_GRAY + "Mundane | Miscellanea" + ChatColor.GRAY + "]");
+            lines.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "This is " + player.getDisplayName() + "'s empty hand.");
+            amount = 1;
 
-            itemName = itemInHand.getItemMeta().getDisplayName() + " x" + itemInHand.getAmount();
         }
 
+        chatItem.setText(ChatColor.DARK_AQUA + "["+ ChatColor.WHITE + player.getDisplayName() + ChatColor.DARK_AQUA + " is holding " + ChatColor.WHITE + itemName + ChatColor.WHITE + " x" + amount + ChatColor.DARK_AQUA + "]");
 
-        ChatBuilder chatItem = new ChatBuilder();
-        chatItem = chatItem.hoverItem(itemInHand);
-        chatItem.append(ChatColor.WHITE + player.getDisplayName() +  ChatColor.DARK_AQUA + " is holding [" + ChatColor.WHITE + itemName + ChatColor.DARK_AQUA + "]");
+        StringBuilder hoverText = new StringBuilder(itemName);
+        try {
+            for (String str : lines) {
+                hoverText.append("\n").append(ChatColor.RESET + str);
+            }
+        } catch(Exception e) {
+
+        }
+
+        chatItem.setHoverEvent(MessageUtil.hoverEvent(hoverText.toString()));
         return chatItem;
     }
 }
