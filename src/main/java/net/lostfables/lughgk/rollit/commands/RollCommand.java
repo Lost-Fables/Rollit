@@ -2,8 +2,10 @@ package net.lostfables.lughgk.rollit.commands;
 
 import co.lotc.core.bukkit.util.ChatBuilder;
 import co.lotc.core.command.CommandTemplate;
+import co.lotc.core.util.MessageUtil;
 import net.lostfables.lughgk.rollit.Rollit;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -98,40 +100,46 @@ public class RollCommand implements CommandExecutor {
     }
 
     public void roll(String rollString, Player player) {
-        if(numOfDice(rollString) == -1 || dieFace(rollString) < 0 || plugin.getRollCap() < numOfDice(rollString)) {
+        if (numOfDice(rollString) == -1 || dieFace(rollString) < 0 || plugin.getRollCap() < numOfDice(rollString)) {
             player.sendMessage(ChatColor.RED + "[Rollit] That is the incorrect syntax for a roll!");
             return;
         }
 
         List<Player> players = (List<Player>) player.getLocation().getNearbyPlayers(plugin.getRollDistance());
-        List<String> lore = new ArrayList<>();
-        String rollName = ChatColor.WHITE + player.getName() + ChatColor.DARK_AQUA + " rolled " + ChatColor.WHITE + rollString;
-        ChatBuilder chatItem = new ChatBuilder();
+        String firstLine = ChatColor.WHITE + player.getName() + ChatColor.DARK_AQUA + " rolled " + ChatColor.WHITE + rollString;
+        List<String> extraLines = new ArrayList<>();
 
+        TextComponent output = new TextComponent();
+
+        // Build rolls array into string [20] [17] [5]...
+        // and formats the total for two extra lines.
         StringBuilder rolls = new StringBuilder();
         int total = 0;
-        for(int index = 0; index < numOfDice(rollString); index++) {
+        for (int index = 0; index < numOfDice(rollString); index++) {
             int roll = (int) Math.floor(Math.random() * (dieFace(rollString) - 1 + 1) + 1);
             rolls.append(ChatColor.DARK_AQUA).append("[").append(ChatColor.WHITE).append(roll).append(ChatColor.DARK_AQUA).append("] ");
             total += roll;
         }
-        if(solver(total, rollString) == null) {
+        if (solver(total, rollString) == null) {
             player.sendMessage(ChatColor.RED + "[Rollit] That is the incorrect syntax for a roll!");
             return;
         }
-        lore.add(rolls.toString());
-        lore.add(ChatColor.DARK_AQUA + "Total: " + ChatColor.WHITE + solver(total, rollString));
+        extraLines.add(rolls.toString());
+        extraLines.add(ChatColor.DARK_AQUA + "Total: " + ChatColor.WHITE + solver(total, rollString));
 
-        ItemStack is = new ItemStack(Material.STONE);
-        ItemMeta im = is.getItemMeta();
-        im.setDisplayName(rollName);
-        im.setLore(lore);
-        is.setItemMeta(im);
+        // Format our lines into a singular string with \n linebreaks.
+        output.setText(firstLine);
+        StringBuilder hoverText = new StringBuilder(firstLine);
+        for (String str : extraLines) {
+            hoverText.append("\n").append(str);
+        }
 
-        chatItem = chatItem.hoverItem(is);
-        chatItem.append(rollName);
-        for(Player p : players) {
-            chatItem.send(p);
+        // Use singular string in a hover event with line breaks to create a box without using an item.
+        output.setHoverEvent(MessageUtil.hoverEvent(hoverText.toString()));
+
+        // Display text to all players involved.
+        for (Player p : players) {
+            p.sendMessage(output);
         }
     }
 }
