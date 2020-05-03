@@ -128,7 +128,7 @@ public class RollCommand implements CommandExecutor {
         extraLines.add(ChatColor.DARK_AQUA + "Total: " + ChatColor.WHITE + solver(total, rollString));
 
         // Format our lines into a singular string with \n linebreaks.
-        output.setText(firstLine + ChatColor.DARK_AQUA + ": " + ChatColor.WHITE + solver(total, rollString));
+        output.setText(ChatColor.DARK_AQUA + "[" + firstLine + ChatColor.DARK_AQUA + ": " + ChatColor.WHITE + solver(total, rollString) + ChatColor.DARK_AQUA + "]");
         StringBuilder hoverText = new StringBuilder(firstLine);
         for (String str : extraLines) {
             hoverText.append("\n").append(str);

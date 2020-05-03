@@ -93,7 +93,7 @@ public class ShowCommand implements CommandExecutor {
             }
 
         } catch(NullPointerException e) {
-            itemName =  ChatColor.DARK_GRAY + player.getDisplayName() + "'s hand";
+            itemName =  ChatColor.DARK_GRAY + player.getDisplayName() + "'s Hand";
             lines.add(ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + "Very Common " + ChatColor.GRAY + "| Natural | " + ChatColor.DARK_GRAY + "Mundane | Miscellanea" + ChatColor.GRAY + "]");
             lines.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "This is " + player.getDisplayName() + "'s empty hand.");
             amount = 1;

@@ -21,3 +21,5 @@ commands:
       §cUsage: /show or /show <player>
       §cExample: /show
       §cExample: /show Lugh__
+  sit:
+    description: Allows you to sit.

@@ -1,3 +1,7 @@
 roll_distance: 30
 roll_cap: 99
 show_distance: 30
+sit_blocks:
+  - OAK_SLAB
+  - OAK_STAIRS
+  - PISTON_HEAD
