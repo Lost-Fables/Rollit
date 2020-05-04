@@ -3,6 +3,9 @@ import net.lostfables.lughgk.rollit.Rollit;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +21,7 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 
 public class SitCommand implements CommandExecutor, Listener {
 
-    private Rollit plugin = Rollit.getPlugin(Rollit.class);
+    private final Rollit plugin = Rollit.getPlugin(Rollit.class);
 
     public SitCommand() {
         plugin.getCommand("sit").setExecutor(this);
@@ -46,9 +49,14 @@ public class SitCommand implements CommandExecutor, Listener {
 
         if(sender instanceof Player) {
             Player player = (Player) sender;
-            Location playerLoc = player.getLocation();
-            playerLoc.setY(playerLoc.getY()-1.7);
-            return seat(player, playerLoc);
+            if(!player.isInsideVehicle()) {
+                Location playerLoc = player.getLocation();
+                playerLoc.setY(playerLoc.getY()-1.7);
+                return seat(player, playerLoc);
+            }
+            player.sendMessage(ChatColor.RED + "[Rollit] You're already sitting!");
+            return false;
+
         }
 
 
@@ -58,25 +66,62 @@ public class SitCommand implements CommandExecutor, Listener {
 
     @EventHandler
     public void onDismount(EntityDismountEvent event) {
-        if(event.getDismounted().getCustomName().equals(ChatColor.MAGIC + "seat")) {
-            event.getDismounted().remove();
+        try {
+            if (event.getEntity() instanceof Player && event.getDismounted() instanceof ArmorStand && event.getDismounted().getCustomName().equals(ChatColor.MAGIC + "seat")) {
+                Player player = (Player) event.getEntity();
+                event.getDismounted().remove();
+                ArmorStand seat = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
+                seat.addPassenger(player);
+                seat.remove();
+            }
+        } catch(NullPointerException ignored) {
+
         }
     }
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            Material[] mats = plugin.getSitBlocks();
-            for(short index = 0; index < mats.length; index++) {
-                if(event.getClickedBlock().getType() == mats[index]) {
-                    Location blockLoc = event.getClickedBlock().getLocation();
-                    blockLoc.setY(blockLoc.getY()-1.2);
-                    blockLoc.setX(blockLoc.getX()+0.5);
-                    blockLoc.setZ(blockLoc.getZ()+0.5);
-                    seat(event.getPlayer(), blockLoc);
-                }
-            }
 
+        if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !event.getPlayer().isSneaking() && !event.getPlayer().isInsideVehicle() && event.getPlayer().getInventory().getItemInMainHand().toString().equals("ItemStack{AIR x 0}")) {
+            Block clickedBlock = event.getClickedBlock();
+            Location blockAbove = event.getClickedBlock().getLocation();
+            blockAbove.setY(blockAbove.getY() + 1);
+            if (blockAbove.getBlock().isEmpty()) {
+                Material[] mats = plugin.getSitBlocks();
+
+                Location blockLoc = clickedBlock.getLocation();
+                Location playerLoc = event.getPlayer().getLocation();
+
+                for (Material mat : mats) {
+                    if (clickedBlock.getType() == mat && !clickedBlock.getBlockData().toString().contains("half=top") && !clickedBlock.getBlockData().toString().contains("type=top")) {
+
+                        try {
+                            Directional clickedStair = (Directional) clickedBlock.getBlockData();
+
+                            if (clickedStair.getFacing() == BlockFace.EAST) {
+                                playerLoc.setX(blockLoc.getX() + 0.35);
+                                playerLoc.setZ(blockLoc.getZ() + 0.5);
+                            } else if (clickedStair.getFacing() == BlockFace.WEST) {
+                                playerLoc.setX(blockLoc.getX() + 0.65);
+                                playerLoc.setZ(blockLoc.getZ() + 0.5);
+                            } else if (clickedStair.getFacing() == BlockFace.NORTH) {
+                                playerLoc.setX(blockLoc.getX() + 0.5);
+                                playerLoc.setZ(blockLoc.getZ() + 0.65);
+                            } else if (clickedStair.getFacing() == BlockFace.SOUTH) {
+                                playerLoc.setX(blockLoc.getX() + 0.5);
+                                playerLoc.setZ(blockLoc.getZ() + 0.35);
+                            }
+
+                        } catch (Exception e) {
+                            playerLoc.setX(blockLoc.getX() + 0.5);
+                            playerLoc.setZ(blockLoc.getZ() + 0.5);
+                        }
+                        playerLoc.setY(blockLoc.getY() - 1.2);
+                        seat(event.getPlayer(), playerLoc);
+                    }
+                }
+
+            }
         }
 
     }

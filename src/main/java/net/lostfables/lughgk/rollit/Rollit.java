@@ -41,7 +41,6 @@ public final class Rollit extends JavaPlugin {
         rollCap = getConfig().getInt("roll_cap");
         showDistance = getConfig().getInt("show_distance");
         sitBlocks = getConfig().getStringList("sit_blocks");
-        System.out.println(getSitBlocks().toString());
         new RollCommand();
         new ShowCommand();
         new SitCommand();
