@@ -30,7 +30,6 @@ public class SitCommand implements CommandExecutor, Listener {
 
     public boolean seat(Player player, Location loc) {
 
-
         if(player.isOnGround()) {
             ArmorStand seat = (ArmorStand) player.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
             seat.setCustomName(ChatColor.MAGIC + "seat");
@@ -49,13 +48,21 @@ public class SitCommand implements CommandExecutor, Listener {
 
         if(sender instanceof Player) {
             Player player = (Player) sender;
-            if(!player.isInsideVehicle()) {
+            Location blockAbove = player.getLocation();
+            blockAbove.setY(blockAbove.getY() + 1);
+
+            if(!blockAbove.getBlock().isEmpty()) {
+                player.sendMessage("You don't have enough space to sit!");
+                return false;
+            }else if(!player.isInsideVehicle()) {
                 Location playerLoc = player.getLocation();
                 playerLoc.setY(playerLoc.getY()-1.7);
                 return seat(player, playerLoc);
+            } else {
+                player.sendMessage(ChatColor.RED + "[Rollit] You're already sitting!");
+                return false;
             }
-            player.sendMessage(ChatColor.RED + "[Rollit] You're already sitting!");
-            return false;
+
 
         }
 
@@ -82,7 +89,8 @@ public class SitCommand implements CommandExecutor, Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
 
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !event.getPlayer().isSneaking() && !event.getPlayer().isInsideVehicle() && event.getPlayer().getInventory().getItemInMainHand().toString().equals("ItemStack{AIR x 0}")) {
+        if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !event.getPlayer().isSneaking() && !event.getPlayer().isInsideVehicle()) {
+
             Block clickedBlock = event.getClickedBlock();
             Location blockAbove = event.getClickedBlock().getLocation();
             blockAbove.setY(blockAbove.getY() + 1);
@@ -94,7 +102,7 @@ public class SitCommand implements CommandExecutor, Listener {
 
                 for (Material mat : mats) {
                     if (clickedBlock.getType() == mat && !clickedBlock.getBlockData().toString().contains("half=top") && !clickedBlock.getBlockData().toString().contains("type=top")) {
-
+                        event.setCancelled(true);
                         try {
                             Directional clickedStair = (Directional) clickedBlock.getBlockData();
 
@@ -118,6 +126,7 @@ public class SitCommand implements CommandExecutor, Listener {
                         }
                         playerLoc.setY(blockLoc.getY() - 1.2);
                         seat(event.getPlayer(), playerLoc);
+                        break;
                     }
                 }
 

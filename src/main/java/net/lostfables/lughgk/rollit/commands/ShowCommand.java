@@ -72,6 +72,7 @@ public class ShowCommand implements CommandExecutor {
         TextComponent chatItem = new TextComponent();
         ItemStack itemInHand = null;
         List<String> lines = new ArrayList<>();
+
         Map<Enchantment, Integer> enchants = new HashMap<>();
         String itemName;
         int amount = 1;
