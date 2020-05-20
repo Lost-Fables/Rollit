@@ -1,4 +1,5 @@
 package net.lostfables.lughgk.rollit.commands;
+import co.lotc.core.bukkit.util.ItemUtil;
 import net.lostfables.lughgk.rollit.Rollit;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
@@ -11,11 +12,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 
@@ -30,7 +33,12 @@ public class SitCommand implements CommandExecutor, Listener {
 
     public boolean seat(Player player, Location loc) {
 
-        if(player.isOnGround()) {
+        if(player.isOnGround() && loc.getNearbyPlayers(2).contains(player) && player.getLocation().getY() > loc.getY()) {
+            ItemStack itemStack = player.getInventory().getItemInMainHand();
+            player.sendMessage(itemStack.toString());
+            if((!itemStack.hasItemMeta() && itemStack.getType().isBlock() && !itemStack.toString().contains("ItemStack{AIR")) || (itemStack.hasItemMeta() && ItemUtil.hasCustomTag(itemStack.getItemMeta(), "item-unplaceable"))) {
+                return false;
+            }
             ArmorStand seat = (ArmorStand) player.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
             seat.setCustomName(ChatColor.MAGIC + "seat");
             seat.setInvulnerable(true);
@@ -38,9 +46,9 @@ public class SitCommand implements CommandExecutor, Listener {
             seat.setVisible(false);
             seat.addPassenger(player);
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     @Override
@@ -102,7 +110,6 @@ public class SitCommand implements CommandExecutor, Listener {
 
                 for (Material mat : mats) {
                     if (clickedBlock.getType() == mat && !clickedBlock.getBlockData().toString().contains("half=top") && !clickedBlock.getBlockData().toString().contains("type=top")) {
-                        event.setCancelled(true);
                         try {
                             Directional clickedStair = (Directional) clickedBlock.getBlockData();
 
@@ -125,7 +132,9 @@ public class SitCommand implements CommandExecutor, Listener {
                             playerLoc.setZ(blockLoc.getZ() + 0.5);
                         }
                         playerLoc.setY(blockLoc.getY() - 1.2);
-                        seat(event.getPlayer(), playerLoc);
+                        if(seat(event.getPlayer(), playerLoc)) {
+                            event.setCancelled(true);
+                        }
                         break;
                     }
                 }
