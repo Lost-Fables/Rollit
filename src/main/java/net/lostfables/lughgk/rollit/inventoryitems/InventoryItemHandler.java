@@ -36,32 +36,43 @@ public class InventoryItemHandler implements Listener {
         if((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) && event.getPlayer().getInventory().getItemInMainHand() != null) {
             ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
 
-            if(item.hasItemMeta() && ItemUtil.hasCustomTag(item, Rollit.INVENTORY_ITEM_TAG) && !ItemUtil.getCustomTag(item, Rollit.INVENTORY_ITEM_UUID_TAG).equals("!")) {
-                Player p = event.getPlayer();
+            if(item.hasItemMeta() && ItemUtil.hasCustomTag(item, Rollit.INVENTORY_ITEM_TAG)) {
                 event.setCancelled(true);
-                InventoryItem invItem = new InventoryItem(p.getInventory().getItemInMainHand());
-                Inventory moneybag = plugin.getServer().createInventory(invItem, invItem.getSize(), invItem.getName());
+                Player p = event.getPlayer();
+                if (!ItemUtil.getCustomTag(item, Rollit.INVENTORY_ITEM_UUID_TAG).equals("!")) {
+                    InventoryItem invItem = new InventoryItem(p.getInventory().getItemInMainHand());
+                    Inventory moneybag = plugin.getServer().createInventory(invItem, invItem.getSize(), invItem.getName());
 
-                for(int x = 0; x < moneybag.getSize(); x++) {
-                    if(!ItemUtil.getCustomTag(item,"inventoryslot-" + (x+1)).equals("!")) {
-                        moneybag.setItem(x, ItemUtil.getItemFromYaml(ItemUtil.getCustomTag(item,"inventoryslot-" + (x+1))));
+                    for(int x = 0; x < moneybag.getSize(); x++) {
+                        if(!ItemUtil.getCustomTag(item,"inventoryslot-" + (x+1)).equals("!")) {
+                            moneybag.setItem(x, ItemUtil.getItemFromYaml(ItemUtil.getCustomTag(item,"inventoryslot-" + (x+1))));
+                        }
+                    }
+
+                    p.openInventory(moneybag);
+                    return;
+
+                } else if(ItemUtil.getCustomTag(item, Rollit.INVENTORY_ITEM_UUID_TAG).equals("!")) {
+
+                    if(!(item.getAmount() <= 1)) {
+                        p.sendMessage(ChatColor.RED +"[Rollit] You can only claim one Inventory Item at a time!");
+                        return;
+                    }
+                    InventoryItem.initInventoryItem(item);
+                    ItemMeta im = item.getItemMeta();
+
+                    if(ItemUtil.getCustomTag(item, Rollit.INVENTORY_ITEM_TYPE_TAG).equals(InventoryItemType.MONEYBAG.tag)) {
+
+                        List<String> stringList = new ArrayList<>();
+                        stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "Right click with this item in hand");
+                        stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "to view its contents.");
+                        im.setLore(stringList);
+                        item.setItemMeta(im);
+                        return;
+
                     }
                 }
 
-                p.openInventory(moneybag);
-                return;
-
-            } else if(item.hasItemMeta() && ItemUtil.hasCustomTag(item, Rollit.INVENTORY_ITEM_TAG) && ItemUtil.getCustomTag(item, Rollit.INVENTORY_ITEM_UUID_TAG).equals("!")) {
-                InventoryItem.initInventoryItem(item);
-                ItemMeta im = item.getItemMeta();
-                if(ItemUtil.getCustomTag(item, Rollit.INVENTORY_ITEM_TYPE_TAG).equals(InventoryItemType.MONEYBAG.tag)) {
-                    event.setCancelled(true);
-                    List<String> stringList = new ArrayList<>();
-                    stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "Right click with this item in hand");
-                    stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "to view its contents.");
-                    im.setLore(stringList);
-                    item.setItemMeta(im);
-                }
             }
         }
     }
