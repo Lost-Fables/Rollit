@@ -4,10 +4,3 @@ show_distance: 30
 sit_blocks:
   - OAK_SLAB
   - OAK_STAIRS
-host: 'localhost'
-port: 3306
-database: 'rollit'
-username: 'root'
-password:
-table:
-  - 'money_pouch_table'
