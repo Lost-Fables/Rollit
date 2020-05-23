@@ -12,7 +12,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,7 +34,6 @@ public class SitCommand implements CommandExecutor, Listener {
 
         if(player.isOnGround() && loc.getNearbyPlayers(2).contains(player) && player.getLocation().getY() > loc.getY()) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            player.sendMessage(itemStack.toString());
             if((!itemStack.hasItemMeta() && itemStack.getType().isBlock() && !itemStack.toString().contains("ItemStack{AIR")) || (itemStack.hasItemMeta() && ItemUtil.hasCustomTag(itemStack.getItemMeta(), "item-unplaceable"))) {
                 return false;
             }
