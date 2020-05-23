@@ -3,12 +3,11 @@ package net.lostfables.lughgk.rollit;
 import net.lostfables.lughgk.rollit.commands.RollCommand;
 import net.lostfables.lughgk.rollit.commands.ShowCommand;
 import net.lostfables.lughgk.rollit.commands.SitCommand;
-import net.lostfables.lughgk.rollit.moneybags.MoneyBags;
+import net.lostfables.lughgk.rollit.inventoryitemhandler.InventoryItems;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.Connection;
 import java.util.List;
 
 public final class Rollit extends JavaPlugin {
@@ -19,7 +18,8 @@ public final class Rollit extends JavaPlugin {
     private int rollDistance;
 
     public final static String BASE_PERMISSION = "Rollit";
-    public final static String MONEYBAG_TYTHAN_TAG = "moneybag";
+    public final static String INVENTORY_ITEM_TAG = "storage-";
+    public final static String INVENTORY_ITEM_NAME_TAG = "inv-name";
     public final static String MONEYBAG_TITLE = ChatColor.WHITE + "Moneybag";
 
     @Override
@@ -34,7 +34,7 @@ public final class Rollit extends JavaPlugin {
         new RollCommand();
         new ShowCommand();
         new SitCommand();
-        new MoneyBags();
+        new InventoryItems();
         // Plugin startup logic
 
     }
