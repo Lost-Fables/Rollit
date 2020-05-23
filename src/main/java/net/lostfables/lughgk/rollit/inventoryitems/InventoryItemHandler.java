@@ -107,12 +107,15 @@ public class InventoryItemHandler implements Listener {
         InventoryItem invitem;
         try {
             invitem = (InventoryItem) event.getInventory().getHolder();
-            if (!invitem.getSerialNumber().equals(UUID.fromString(ItemUtil.getCustomTag(event.getWhoClicked().getInventory().getItemInMainHand(), Rollit.INVENTORY_ITEM_UUID_TAG)))) {
+            if (!ItemUtil.hasCustomTag(event.getWhoClicked().getInventory().getItemInMainHand(), Rollit.INVENTORY_ITEM_UUID_TAG) || (ItemUtil.hasCustomTag(event.getWhoClicked().getInventory().getItemInMainHand(), Rollit.INVENTORY_ITEM_UUID_TAG) && !invitem.getSerialNumber().equals(UUID.fromString(ItemUtil.getCustomTag(event.getWhoClicked().getInventory().getItemInMainHand(), Rollit.INVENTORY_ITEM_UUID_TAG))))) {
                 event.setCancelled(true);
                 event.getWhoClicked().closeInventory();
+                ((Player)event.getWhoClicked()).updateInventory();
+                return;
             }
             if(ItemUtil.hasCustomTag(event.getCurrentItem(), Rollit.INVENTORY_ITEM_TAG)) {
                 event.setCancelled(true);
+                return;
             }
         } catch(ClassCastException ignored) {
             return;

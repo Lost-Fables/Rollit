@@ -1,5 +1,7 @@
 package net.lostfables.lughgk.rollit;
 
+import co.lotc.core.bukkit.command.Commands;
+import net.lostfables.lughgk.rollit.commands.InventoryItemCommands;
 import net.lostfables.lughgk.rollit.commands.RollCommand;
 import net.lostfables.lughgk.rollit.commands.ShowCommand;
 import net.lostfables.lughgk.rollit.commands.SitCommand;
@@ -35,6 +37,8 @@ public final class Rollit extends JavaPlugin {
         new RollCommand();
         new ShowCommand();
         new SitCommand();
+        Commands.build(getCommand("invitem"), () -> new InventoryItemCommands(this));
+
         new InventoryItemHandler();
         // Plugin startup logic
 

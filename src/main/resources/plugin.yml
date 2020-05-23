@@ -23,3 +23,5 @@ commands:
       §cExample: /show Lugh__
   sit:
     description: Allows you to sit.
+  invitem:
+    description: Inventory Items basecommand.
