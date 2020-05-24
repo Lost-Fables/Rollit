@@ -20,7 +20,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class InventoryItemHandler implements Listener {
 
@@ -39,94 +38,73 @@ public class InventoryItemHandler implements Listener {
             if(item.hasItemMeta() && ItemUtil.hasCustomTag(item, Rollit.INVENTORY_ITEM_TAG)) {
                 event.setCancelled(true);
                 Player p = event.getPlayer();
-                if (!ItemUtil.getCustomTag(item, Rollit.INVENTORY_ITEM_UUID_TAG).equals("!")) {
-                    InventoryItem invItem = new InventoryItem(p.getInventory().getItemInMainHand());
-                    Inventory moneybag = plugin.getServer().createInventory(invItem, invItem.getSize(), invItem.getName());
-
-                    for(int x = 0; x < moneybag.getSize(); x++) {
-                        if(!ItemUtil.getCustomTag(item,"inventoryslot-" + (x+1)).equals("!")) {
-                            moneybag.setItem(x, ItemUtil.getItemFromYaml(ItemUtil.getCustomTag(item,"inventoryslot-" + (x+1))));
-                        }
-                    }
-
-                    p.openInventory(moneybag);
-                    return;
-
-                } else if(ItemUtil.getCustomTag(item, Rollit.INVENTORY_ITEM_UUID_TAG).equals("!")) {
-
-                    if(!(item.getAmount() <= 1)) {
-                        p.sendMessage(ChatColor.RED +"[Rollit] You can only claim one Inventory Item at a time!");
-                        return;
-                    }
-                    InventoryItem.initInventoryItem(item);
-                    ItemMeta im = item.getItemMeta();
-
-                    if(ItemUtil.getCustomTag(item, Rollit.INVENTORY_ITEM_TYPE_TAG).equals(InventoryItemType.MONEYBAG.tag)) {
-
-                        List<String> stringList = new ArrayList<>();
-                        stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "Right click with this item in hand");
-                        stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "to view its contents.");
-                        im.setLore(stringList);
-                        item.setItemMeta(im);
-                        return;
-
-                    }
-                }
-
+                InventoryItem invItem = new InventoryItem(p.getInventory().getItemInMainHand(), p.getInventory().getHeldItemSlot(), p.getInventory().getContents());
+                p.openInventory(invItem.getInventory());
+                return;
             }
         }
     }
 
     @EventHandler
     public void onInventoryItemClose(InventoryCloseEvent event) {
-        InventoryItem invitem;
         try {
-            invitem = (InventoryItem) event.getInventory().getHolder();
-            if(event.getPlayer().getInventory().getItemInMainHand().hasItemMeta() && invitem.getSerialNumber()
-                    .equals(UUID.fromString(ItemUtil.getCustomTag(event.getPlayer().getInventory().getItemInMainHand(), Rollit.INVENTORY_ITEM_UUID_TAG)))) {
+            if(event.getInventory().getHolder() instanceof InventoryItem) {
+                InventoryItem invitem = (InventoryItem) event.getInventory().getHolder();
+                Player p = (Player) event.getPlayer();
+                if (invitem.getInventorySlot() == p.getInventory().getHeldItemSlot() && invitem.getBaseItem().equals(p.getInventory().getItemInMainHand())) {
 
-                ItemStack[] items = event.getInventory().getContents();
+                    ItemStack[] items = event.getInventory().getContents();
 
-                for(int x = 0; x < items.length; x++) {
-                    try {
-                        ItemUtil.setCustomTag(event.getPlayer().getInventory().getItemInMainHand(), "inventoryslot-" + (x + 1), ItemUtil.getItemYaml(items[x]));
-                    } catch(NullPointerException e) {
-                        ItemUtil.setCustomTag(event.getPlayer().getInventory().getItemInMainHand(), "inventoryslot-" + (x+1), "!");
+                    for (int x = 0; x < items.length; x++) {
+                        try {
+                            ItemUtil.setCustomTag(p.getInventory().getItemInMainHand(), "inventoryslot-" + (x + 1), ItemUtil.getItemYaml(items[x]));
+                        } catch (NullPointerException e) {
+                            ItemUtil.setCustomTag(p.getInventory().getItemInMainHand(), "inventoryslot-" + (x + 1), "!");
+                        }
                     }
+                }
+            }
+        } catch(ClassCastException ignored) {
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    @EventHandler
+    public void onInventoryItemInteract(InventoryClickEvent event) {
+
+        try {
+            if(event.getInventory().getHolder() instanceof InventoryItem) {
+                InventoryItem invitem = (InventoryItem) event.getInventory().getHolder();
+                Player p = ((Player) event.getWhoClicked());
+
+                if (invitem.getInventorySlot() != p.getInventory().getHeldItemSlot() || !invitem.getBaseItem().equals(p.getInventory().getItemInMainHand())) {
+                    event.setCancelled(true);
+                    event.getWhoClicked().closeInventory();
+                    ((Player) event.getWhoClicked()).getInventory().clear();
+                    ((Player) event.getWhoClicked()).getInventory().setContents(invitem.getInitInventory());
+                    ((Player) event.getWhoClicked()).updateInventory();
+                    return;
+                }
+                if (ItemUtil.hasCustomTag(event.getCurrentItem(), Rollit.INVENTORY_ITEM_TAG)) {
+                    event.setCancelled(true);
+                    p.updateInventory();
+                    return;
                 }
             }
         } catch(ClassCastException ignored) {
             return;
         }
 
-
-    }
-
-    @EventHandler
-    public void onInventoryItemInteract(InventoryClickEvent event) {
-        InventoryItem invitem;
-        try {
-            invitem = (InventoryItem) event.getInventory().getHolder();
-            if (!ItemUtil.hasCustomTag(event.getWhoClicked().getInventory().getItemInMainHand(), Rollit.INVENTORY_ITEM_UUID_TAG) || (ItemUtil.hasCustomTag(event.getWhoClicked().getInventory().getItemInMainHand(), Rollit.INVENTORY_ITEM_UUID_TAG) && !invitem.getSerialNumber().equals(UUID.fromString(ItemUtil.getCustomTag(event.getWhoClicked().getInventory().getItemInMainHand(), Rollit.INVENTORY_ITEM_UUID_TAG))))) {
-                event.setCancelled(true);
-                event.getWhoClicked().closeInventory();
-                ((Player)event.getWhoClicked()).updateInventory();
-                return;
-            }
-            if(ItemUtil.hasCustomTag(event.getCurrentItem(), Rollit.INVENTORY_ITEM_TAG)) {
-                event.setCancelled(true);
-                return;
-            }
-        } catch(ClassCastException ignored) {
-            return;
-        }
     }
 
     public void moneyBagRecipe() {
         ItemStack moneybag = ItemUtil.getSkullFromTexture(InventoryItemType.MONEYBAG.skullTexture);
         List<String> stringList = new ArrayList<>();
         stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "Right click with this item in hand");
-        stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "to claim this new money bag.");
+        stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "to view its contents.");
         ItemMeta im = moneybag.getItemMeta();
         im.setDisplayName(InventoryItemType.MONEYBAG.title);
         im.setLore(stringList);

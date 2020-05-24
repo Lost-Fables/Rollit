@@ -22,7 +22,6 @@ public final class Rollit extends JavaPlugin {
     public final static String INVENTORY_ITEM_TAG = "inv-item";
     public final static String INVENTORY_ITEM_SIZE_TAG = "inv-size";
     public final static String INVENTORY_ITEM_NAME_TAG = "inv-name";
-    public final static String INVENTORY_ITEM_UUID_TAG = "inv-uuid";
     public final static String INVENTORY_ITEM_TYPE_TAG = "inv-type";
 
     @Override
