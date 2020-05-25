@@ -2,12 +2,10 @@ package net.lostfables.lughgk.rollit.inventoryitems;
 
 import co.lotc.core.bukkit.util.ItemUtil;
 import net.lostfables.lughgk.rollit.Rollit;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.UUID;
 
 public class InventoryItem implements InventoryHolder {
 
@@ -103,7 +101,6 @@ public class InventoryItem implements InventoryHolder {
         }
         return item;
     }
-
 
     //load an item for an inventory
     public static ItemStack createInventoryItem(ItemStack item, InventoryItemType type) {

@@ -94,6 +94,15 @@ public class InventoryItemHandler implements Listener {
                     p.updateInventory();
                     return;
                 }
+                if(ItemUtil.hasCustomTag(invitem.getBaseItem(), Rollit.INVENTORY_ITEM_TYPE_TAG)) {
+                    InventoryItemType type = InventoryItemType.valueOf(ItemUtil.getCustomTag(invitem.getBaseItem(), Rollit.INVENTORY_ITEM_TYPE_TAG));
+                    if(!type.mats.contains(event.getCurrentItem().getType())) {
+                        event.setCancelled(true);
+                        p.sendMessage(ChatColor.RED + "[Rollit] You can not put that sort of item here!");
+                        p.updateInventory();
+                        return;
+                    }
+                }
             }
         } catch(ClassCastException ignored) {
             return;
