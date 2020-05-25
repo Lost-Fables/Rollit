@@ -10,8 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -73,13 +75,12 @@ public class InventoryItemHandler implements Listener {
     }
 
     @EventHandler
-    public void onInventoryItemInteract(InventoryClickEvent event) {
+    public void onInventoryItemClick(InventoryClickEvent event) {
 
         try {
             if(event.getInventory().getHolder() instanceof InventoryItem) {
                 InventoryItem invitem = (InventoryItem) event.getInventory().getHolder();
                 Player p = ((Player) event.getWhoClicked());
-
                 if (invitem.getInventorySlot() != p.getInventory().getHeldItemSlot() || !invitem.getBaseItem().equals(p.getInventory().getItemInMainHand())) {
                     event.setCancelled(true);
                     event.getWhoClicked().closeInventory();
@@ -88,7 +89,7 @@ public class InventoryItemHandler implements Listener {
                     ((Player) event.getWhoClicked()).updateInventory();
                     return;
                 }
-                if (ItemUtil.hasCustomTag(event.getCurrentItem(), Rollit.INVENTORY_ITEM_TAG)) {
+                if (ItemUtil.hasCustomTag(event.getCurrentItem(), Rollit.INVENTORY_ITEM_TAG) || event.getAction() == InventoryAction.HOTBAR_SWAP) {
                     event.setCancelled(true);
                     p.updateInventory();
                     return;
@@ -99,6 +100,7 @@ public class InventoryItemHandler implements Listener {
         }
 
     }
+
 
     public void moneyBagRecipe() {
         ItemStack moneybag = ItemUtil.getSkullFromTexture(InventoryItemType.MONEYBAG.skullTexture);
