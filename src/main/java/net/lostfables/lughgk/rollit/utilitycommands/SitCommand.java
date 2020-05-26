@@ -1,4 +1,4 @@
-package net.lostfables.lughgk.rollit.commands;
+package net.lostfables.lughgk.rollit.utilitycommands;
 import co.lotc.core.bukkit.util.ItemUtil;
 import net.lostfables.lughgk.rollit.Rollit;
 import net.md_5.bungee.api.ChatColor;
@@ -32,7 +32,7 @@ public class SitCommand implements CommandExecutor, Listener {
 
     public boolean seat(Player player, Location loc) {
 
-        if(player.isOnGround() && loc.getNearbyPlayers(2).contains(player) && player.getLocation().getY() > loc.getY()) {
+        if(player.isOnGround() && loc.getNearbyPlayers(3).contains(player) && player.getLocation().getY() > loc.getY()) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
             if((!itemStack.hasItemMeta() && itemStack.getType().isBlock() && !itemStack.toString().contains("ItemStack{AIR")) || (itemStack.hasItemMeta() && ItemUtil.hasCustomTag(itemStack.getItemMeta(), "item-unplaceable"))) {
                 return false;

@@ -1,10 +1,8 @@
 package net.lostfables.lughgk.rollit;
 
 import co.lotc.core.bukkit.command.Commands;
-import net.lostfables.lughgk.rollit.commands.InventoryItemCommands;
-import net.lostfables.lughgk.rollit.commands.RollCommand;
-import net.lostfables.lughgk.rollit.commands.ShowCommand;
-import net.lostfables.lughgk.rollit.commands.SitCommand;
+import net.lostfables.lughgk.rollit.utilitycommands.*;
+import net.lostfables.lughgk.rollit.inventoryitems.InventoryItemCommands;
 import net.lostfables.lughgk.rollit.inventoryitems.InventoryItemHandler;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,9 +12,7 @@ import java.util.List;
 public final class Rollit extends JavaPlugin {
 
     private List<String> sitBlocks;
-    private int rollCap;
-    private int showDistance;
-    private int rollDistance;
+    private int rollCap, showDistance, rollDistance;
 
     public final static String BASE_PERMISSION = "Rollit";
     public final static String INVENTORY_ITEM_TAG = "inv-item";
@@ -37,6 +33,7 @@ public final class Rollit extends JavaPlugin {
         new ShowCommand();
         new SitCommand();
         Commands.build(getCommand("invitem"), () -> new InventoryItemCommands(this));
+        Commands.build(getCommand("rollit"), () -> new RollitCommands(this));
 
         new InventoryItemHandler();
         // Plugin startup logic
@@ -68,6 +65,22 @@ public final class Rollit extends JavaPlugin {
 
     public int getRollDistance() {
         return rollDistance;
+    }
+
+    public void setSitBlocks(List<String> sitBlocks) {
+        this.sitBlocks = sitBlocks;
+    }
+
+    public void setRollCap(int rollCap) {
+        this.rollCap = rollCap;
+    }
+
+    public void setShowDistance(int showDistance) {
+        this.showDistance = showDistance;
+    }
+
+    public void setRollDistance(int rollDistance) {
+        this.rollDistance = rollDistance;
     }
 
 }

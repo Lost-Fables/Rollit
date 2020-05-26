@@ -1,4 +1,4 @@
-package net.lostfables.lughgk.rollit.commands;
+package net.lostfables.lughgk.rollit.inventoryitems;
 
 import co.lotc.core.bukkit.util.ItemUtil;
 import co.lotc.core.command.CommandTemplate;

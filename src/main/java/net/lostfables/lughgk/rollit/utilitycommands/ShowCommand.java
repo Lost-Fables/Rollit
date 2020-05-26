@@ -1,4 +1,4 @@
-package net.lostfables.lughgk.rollit.commands;
+package net.lostfables.lughgk.rollit.utilitycommands;
 
 import co.lotc.core.bukkit.util.PlayerUtil;
 import co.lotc.core.util.MessageUtil;

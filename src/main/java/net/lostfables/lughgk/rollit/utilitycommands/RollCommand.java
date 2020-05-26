@@ -1,19 +1,13 @@
-package net.lostfables.lughgk.rollit.commands;
+package net.lostfables.lughgk.rollit.utilitycommands;
 
-import co.lotc.core.bukkit.util.ChatBuilder;
-import co.lotc.core.command.CommandTemplate;
 import co.lotc.core.util.MessageUtil;
 import net.lostfables.lughgk.rollit.Rollit;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 

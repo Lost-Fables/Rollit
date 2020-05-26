@@ -25,3 +25,5 @@ commands:
     description: Allows you to sit.
   invitem:
     description: Inventory Items basecommand.
+  rollit:
+    description: Rollit base commands.
