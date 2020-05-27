@@ -27,3 +27,5 @@ commands:
     description: Inventory Items basecommand.
   rollit:
     description: Rollit base commands.
+  distance:
+    description: distance base commands.
