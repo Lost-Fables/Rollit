@@ -2,6 +2,7 @@ package net.lostfables.lughgk.rollit.inventoryitems;
 
 import co.lotc.core.bukkit.util.ItemUtil;
 import net.lostfables.lughgk.rollit.Rollit;
+import net.lostfables.lughgk.rollit.enums.InventoryItemType;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -13,9 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -96,7 +95,7 @@ public class InventoryItemHandler implements Listener {
                 }
                 if(ItemUtil.hasCustomTag(invitem.getBaseItem(), Rollit.INVENTORY_ITEM_TYPE_TAG)) {
                     InventoryItemType type = InventoryItemType.valueOf(ItemUtil.getCustomTag(invitem.getBaseItem(), Rollit.INVENTORY_ITEM_TYPE_TAG));
-                    if(!type.mats.contains(event.getCurrentItem().getType())) {
+                    if(!type.getMats().contains(event.getCurrentItem().getType())) {
                         event.setCancelled(true);
                         p.sendMessage(ChatColor.RED + "[Rollit] You can not put that sort of item here!");
                         p.updateInventory();
@@ -112,12 +111,12 @@ public class InventoryItemHandler implements Listener {
 
 
     public void moneyBagRecipe() {
-        ItemStack moneybag = ItemUtil.getSkullFromTexture(InventoryItemType.MONEYBAG.skullTexture);
+        ItemStack moneybag = ItemUtil.getSkullFromTexture(InventoryItemType.MONEYBAG.getSkullTexture());
         List<String> stringList = new ArrayList<>();
         stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "Right click with this item in hand");
         stringList.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "to view its contents.");
         ItemMeta im = moneybag.getItemMeta();
-        im.setDisplayName(InventoryItemType.MONEYBAG.title);
+        im.setDisplayName(InventoryItemType.MONEYBAG.getTitle());
         im.setLore(stringList);
         moneybag.setItemMeta(im);
 

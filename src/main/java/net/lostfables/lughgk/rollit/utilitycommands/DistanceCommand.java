@@ -9,11 +9,8 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.*;
 
 public class DistanceCommand extends CommandTemplate implements Listener {
 
@@ -37,8 +34,6 @@ public class DistanceCommand extends CommandTemplate implements Listener {
             int d = (int) distance3D(((Player) sender).getLocation(), player.getLocation());
             if(d < plugin.getRangeDistance()) {
                 sender.sendMessage(ChatColor.DARK_AQUA + "The Distance between you and " + ChatColor.WHITE + player.getName() + ChatColor.DARK_AQUA + " is " + ChatColor.WHITE + d);
-
-                return;
             }
         }
     }
@@ -49,43 +44,37 @@ public class DistanceCommand extends CommandTemplate implements Listener {
             int d = (int) distance3D(player2.getLocation(), player.getLocation());
             if(d < plugin.getRangeDistance()) {
                 sender.sendMessage(ChatColor.DARK_AQUA + "The Distance between " + ChatColor.WHITE + player.getName() + ChatColor.DARK_AQUA + " and " + ChatColor.WHITE + player2.getName() + ChatColor.DARK_AQUA + " is " + ChatColor.WHITE + d);
-
-                return;
             }
         }
     }
 
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        if(plugin.getRangePlayers().containsKey(event.getPlayer().getUniqueId())) {
-            event.getPlayer().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(ChatColor.DARK_AQUA + "Distance moved: " + ChatColor.WHITE + (int) distance3D(event.getPlayer().getLocation(), plugin.getRangePlayers().get(event.getPlayer().getUniqueId()))).create());
-        }
-    }
-
-
-
-    @Cmd(value = "Toggle between tracking your distance", permission = Rollit.BASE_PERMISSION + "." + BASE_DISTANCE_PERMISSION + ".track")
+    @Cmd(value = "Start to track your move distance.", permission = Rollit.BASE_PERMISSION + "." + BASE_DISTANCE_PERMISSION + ".track")
     public void track(CommandSender sender) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
             if(!plugin.getRangePlayers().containsKey(player.getUniqueId())) {
+                plugin.getRangePlayers().put(player.getUniqueId(), player.getLocation());
+                player.sendMessage(ChatColor.DARK_AQUA + "You are now tracking your distance moved.");
                 plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                     try {
-                        plugin.getRangePlayers().put(player.getUniqueId(), player.getLocation());
-                        player.sendMessage(ChatColor.DARK_AQUA + "You are now tracking your distance moved.");
-                        //pause the task for 30000 millis half a minute
-                        Thread.sleep(30000);
-                        plugin.getRangePlayers().remove(player.getUniqueId());
-                        player.sendMessage(ChatColor.DARK_AQUA + "You are no longer tracking your distance moved.");
+                        for(int x = 0; x < 120; x++) {
+                            player.sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(ChatColor.DARK_AQUA + "Distance moved: " + ChatColor.WHITE + (int) distance3D(player.getLocation(), plugin.getRangePlayers().get(player.getUniqueId()))).create());
+                            //pause the task for 1000 millis or 1 seconds
+                            Thread.sleep(250);
+                        }
+                        if(plugin.getRangePlayers().containsKey(player.getUniqueId())) {
+                            plugin.getRangePlayers().remove(player.getUniqueId());
+                            player.sendMessage(ChatColor.DARK_AQUA + "You are no longer tracking your distance moved.");
+                        }
+                    } catch (NullPointerException ignored) {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
-                return;
+
             } else if(plugin.getRangePlayers().containsKey(player.getUniqueId())) {
                 plugin.getRangePlayers().remove(player.getUniqueId());
                 player.sendMessage(ChatColor.DARK_AQUA + "You are no longer tracking your distance moved.");
-                return;
             }
         }
     }

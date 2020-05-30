@@ -6,7 +6,9 @@ import net.lostfables.lughgk.rollit.inventoryitems.InventoryItemCommands;
 import net.lostfables.lughgk.rollit.inventoryitems.InventoryItemHandler;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.UUID;
 
 public final class Rollit extends JavaPlugin {
 
+    private static Rollit instance;
     private List<String> sitBlocks;
     private Map<UUID, Location> rangePlayers;
     private int rollCap;
@@ -22,7 +25,7 @@ public final class Rollit extends JavaPlugin {
     private int rollDistance;
     private int rangeDistance;
 
-    public final static String BASE_PERMISSION = "Rollit";
+    public final static String BASE_PERMISSION = "rollit";
     public final static String INVENTORY_ITEM_TAG = "inv-item";
     public final static String INVENTORY_ITEM_SIZE_TAG = "inv-size";
     public final static String INVENTORY_ITEM_NAME_TAG = "inv-name";
@@ -30,8 +33,8 @@ public final class Rollit extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         saveDefaultConfig();
-
         rollDistance = getConfig().getInt("roll_distance");
         rollCap = getConfig().getInt("roll_cap");
         showDistance = getConfig().getInt("show_distance");
@@ -56,7 +59,9 @@ public final class Rollit extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-
+    public static Rollit get() {
+        return instance;
+    }
 
 
     public Material[] getSitBlocks() {

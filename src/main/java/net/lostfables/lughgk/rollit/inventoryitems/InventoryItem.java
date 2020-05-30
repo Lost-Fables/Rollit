@@ -2,6 +2,7 @@ package net.lostfables.lughgk.rollit.inventoryitems;
 
 import co.lotc.core.bukkit.util.ItemUtil;
 import net.lostfables.lughgk.rollit.Rollit;
+import net.lostfables.lughgk.rollit.enums.InventoryItemType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -104,10 +105,10 @@ public class InventoryItem implements InventoryHolder {
 
     //load an item for an inventory
     public static ItemStack createInventoryItem(ItemStack item, InventoryItemType type) {
-        ItemUtil.setCustomTag(item, Rollit.INVENTORY_ITEM_TAG, String.valueOf(type.size));
-        ItemUtil.setCustomTag(item, Rollit.INVENTORY_ITEM_NAME_TAG, type.title);
-        ItemUtil.setCustomTag(item, Rollit.INVENTORY_ITEM_TYPE_TAG, type.tag);
-        for(int x = 0; x<type.size; x++) {
+        ItemUtil.setCustomTag(item, Rollit.INVENTORY_ITEM_TAG, String.valueOf(type.getSize()));
+        ItemUtil.setCustomTag(item, Rollit.INVENTORY_ITEM_NAME_TAG, type.getTitle());
+        ItemUtil.setCustomTag(item, Rollit.INVENTORY_ITEM_TYPE_TAG, type.getTag());
+        for(int x = 0; x<type.getSize(); x++) {
             ItemUtil.setCustomTag(item,"inventoryslot-" + (x+1),"!");
         }
         return item;
