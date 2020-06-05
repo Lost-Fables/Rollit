@@ -1,6 +1,7 @@
 package net.lostfables.lughgk.rollit;
 
 import co.lotc.core.bukkit.command.Commands;
+import net.lostfables.lughgk.rollit.listeners.BonemealListener;
 import net.lostfables.lughgk.rollit.utilitycommands.*;
 import net.lostfables.lughgk.rollit.inventoryitems.InventoryItemCommands;
 import net.lostfables.lughgk.rollit.inventoryitems.InventoryItemHandler;
@@ -47,8 +48,8 @@ public final class Rollit extends JavaPlugin {
         Commands.build(getCommand("distance"), () -> new DistanceCommand(this));
 
         new InventoryItemHandler();
-        // Plugin startup logic
 
+        getServer().getPluginManager().registerEvents(new BonemealListener(), this);
     }
 
     @Override
