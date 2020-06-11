@@ -29,3 +29,5 @@ commands:
     description: Rollit base commands.
   distance:
     description: distance base commands.
+  flowers.use:
+    description: Able to use bonemeal to get extra flowers.

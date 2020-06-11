@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\Boxy\IdeaProjects\rollit\src\main\java\net\lostfables\lughgk\rollit\enums\InventoryItemType.java
 C:\Users\Boxy\IdeaProjects\rollit\src\main\java\net\lostfables\lughgk\rollit\inventoryitems\InventoryItemCommands.java
 C:\Users\Boxy\IdeaProjects\rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\DistanceCommand.java
@@ -9,3 +10,16 @@ C:\Users\Boxy\IdeaProjects\rollit\src\main\java\net\lostfables\lughgk\rollit\Rol
 C:\Users\Boxy\IdeaProjects\rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\RollCommand.java
 C:\Users\Boxy\IdeaProjects\rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\RollitCommands.java
 C:\Users\Boxy\IdeaProjects\rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\SitCommand.java
+=======
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\Rollit.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\ShowCommand.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\SitCommand.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\inventoryitems\InventoryItem.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\inventoryitems\InventoryItemHandler.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\inventoryitems\InventoryItemType.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\listeners\BonemealListener.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\RollCommand.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\RollitCommands.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\DistanceCommand.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\inventoryitems\InventoryItemCommands.java
+>>>>>>> cfb87ff64b1361d4d3031463d3791527f0006423
