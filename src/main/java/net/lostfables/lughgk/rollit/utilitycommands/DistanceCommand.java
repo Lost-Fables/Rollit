@@ -23,6 +23,13 @@ public class DistanceCommand extends CommandTemplate implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
     }
+
+    /**
+     * Gets the distance between two locations in minecraft
+     * @param loc1 The location of the first object
+     * @param loc2 The location of the second object
+     * @return
+     */
     
     public static double distance3D(Location loc1, Location loc2) {
         return Math.round(Math.sqrt(Math.pow((loc1.getX() - loc2.getX()), 2) + Math.pow((loc1.getY() - loc2.getY()), 2) + Math.pow((loc1.getZ() - loc2.getZ()), 2)));
@@ -48,7 +55,7 @@ public class DistanceCommand extends CommandTemplate implements Listener {
         }
     }
 
-    @Cmd(value = "Start to track your move distance.", permission = Rollit.BASE_PERMISSION + "." + BASE_DISTANCE_PERMISSION + ".track")
+    @Cmd(value = "toggles the distance tracker.", permission = Rollit.BASE_PERMISSION + "." + BASE_DISTANCE_PERMISSION + ".track")
     public void track(CommandSender sender) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
@@ -57,10 +64,12 @@ public class DistanceCommand extends CommandTemplate implements Listener {
                 player.sendMessage(ChatColor.DARK_AQUA + "You are now tracking your distance moved.");
                 plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                     try {
-                        for(int x = 0; x < 120; x++) {
+                        int second = 30;
+                        double delay = .25;
+                        for(int x = 0; x < Math.round(second/delay); x++) {
                             player.sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(ChatColor.DARK_AQUA + "Distance moved: " + ChatColor.WHITE + (int) distance3D(player.getLocation(), plugin.getRangePlayers().get(player.getUniqueId()))).create());
                             //pause the task for 1000 millis or 1 seconds
-                            Thread.sleep(250);
+                            Thread.sleep(Math.round(1000 * delay));
                         }
                         if(plugin.getRangePlayers().containsKey(player.getUniqueId())) {
                             plugin.getRangePlayers().remove(player.getUniqueId());

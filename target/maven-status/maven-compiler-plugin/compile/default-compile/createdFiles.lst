@@ -1,10 +1,11 @@
 net\lostfables\lughgk\rollit\enums\InventoryItemType.class
 net\lostfables\lughgk\rollit\utilitycommands\DistanceCommand.class
-net\lostfables\lughgk\rollit\utilitycommands\SitCommand.class
 net\lostfables\lughgk\rollit\utilitycommands\ShowCommand.class
 net\lostfables\lughgk\rollit\inventoryitems\InventoryItem.class
+net\lostfables\lughgk\rollit\listeners\BonemealListener.class
+net\lostfables\lughgk\rollit\Rollit.class
+net\lostfables\lughgk\rollit\utilitycommands\SitCommand.class
 net\lostfables\lughgk\rollit\inventoryitems\InventoryItemCommands.class
 net\lostfables\lughgk\rollit\inventoryitems\InventoryItemHandler.class
 net\lostfables\lughgk\rollit\utilitycommands\RollitCommands.class
-net\lostfables\lughgk\rollit\Rollit.class
 net\lostfables\lughgk\rollit\utilitycommands\RollCommand.class

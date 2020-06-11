@@ -20,14 +20,14 @@ public class InventoryItemCommands extends CommandTemplate {
     }
 
     @Cmd(value = "Create a new inventory item.", permission = Rollit.BASE_PERMISSION + "." + BASE_INV_ITEM_PERMISSION + ".create")
-    public void create(CommandSender sender, int size, String[] args) {
+    public void create(CommandSender sender, Sizes size, String[] name) {
         if(sender instanceof Player && ((Player) sender).getInventory().getItemInMainHand() != null) {
             Player p = (Player) sender;
             if(ItemUtil.hasCustomTag(p.getInventory().getItemInMainHand(), Rollit.INVENTORY_ITEM_TAG)) {
                 p.sendMessage(ChatColor.RED + "[Rollit] This is already an inventory item!");
                 return;
             } else {
-                InventoryItem.initInventoryItem(p.getInventory().getItemInMainHand(), StringUtils.join(args, " "), size);
+                InventoryItem.initInventoryItem(p.getInventory().getItemInMainHand(), StringUtils.join(name, " "), size.getSize());
                 p.sendMessage(ChatColor.DARK_AQUA + "Successfully created new inventory item!");
             }
         }
