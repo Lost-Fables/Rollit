@@ -1,5 +1,6 @@
 package net.lostfables.lughgk.rollit.listeners;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -52,13 +53,15 @@ public class FreeSilktouchListener implements Listener {
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent e) {
-		for (Material mat : mats) {
-			if (e.getBlock().getType().equals(mat)) {
-				e.setCancelled(true);
-				ItemStack item = new ItemStack(mat);
-				Location loc = e.getBlock().getLocation();
-				loc.getWorld().dropItemNaturally(loc, item);
-				break;
+		if (!e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+			for (Material mat : mats) {
+				if (e.getBlock().getType().equals(mat)) {
+					e.setCancelled(true);
+					ItemStack item = new ItemStack(mat);
+					Location loc = e.getBlock().getLocation();
+					loc.getWorld().dropItemNaturally(loc, item);
+					break;
+				}
 			}
 		}
 	}
