@@ -2,6 +2,7 @@ package net.lostfables.lughgk.rollit;
 
 import co.lotc.core.bukkit.command.Commands;
 import net.lostfables.lughgk.rollit.listeners.BonemealListener;
+import net.lostfables.lughgk.rollit.listeners.FreeSilktouchListener;
 import net.lostfables.lughgk.rollit.utilitycommands.*;
 import net.lostfables.lughgk.rollit.inventoryitems.InventoryItemCommands;
 import net.lostfables.lughgk.rollit.inventoryitems.InventoryItemHandler;
@@ -53,6 +54,7 @@ public final class Rollit extends JavaPlugin {
         new InventoryItemHandler();
 
         getServer().getPluginManager().registerEvents(new BonemealListener(), this);
+        getServer().getPluginManager().registerEvents(new FreeSilktouchListener(), this);
     }
 
     @Override
