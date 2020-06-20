@@ -4,6 +4,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -51,7 +52,7 @@ public class FreeSilktouchListener implements Listener {
 			Material.WHITE_STAINED_GLASS_PANE
 	};
 
-	@EventHandler
+	@EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent e) {
 		if (!e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
 			for (Material mat : mats) {
@@ -59,6 +60,7 @@ public class FreeSilktouchListener implements Listener {
 					e.setCancelled(true);
 					ItemStack item = new ItemStack(mat);
 					Location loc = e.getBlock().getLocation();
+					loc.getBlock().setType(Material.AIR);
 					loc.getWorld().dropItemNaturally(loc, item);
 					break;
 				}
