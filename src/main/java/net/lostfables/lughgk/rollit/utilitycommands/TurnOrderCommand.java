@@ -11,6 +11,7 @@ import org.bukkit.scoreboard.*;
 
 import java.util.HashMap;
 
+
 public class TurnOrderCommand extends CommandTemplate implements Listener {
 
     public final static String BASE_TURNORDER_PERMISSION = "turnorder";
