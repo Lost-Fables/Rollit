@@ -33,10 +33,12 @@ public class StoredUserData {
 		}.runTaskTimerAsynchronously(Rollit.get(), 0, 1200);
 	}
 
+	protected String weight;
 	protected String prefix;
 	protected long lastUpdated = System.currentTimeMillis();
 
-	protected StoredUserData(UUID uuid, String prefix) {
+	protected StoredUserData(UUID uuid, String weight, String prefix) {
+		this.weight = weight;
 		this.prefix = prefix;
 		dataMap.put(uuid, this);
 	}

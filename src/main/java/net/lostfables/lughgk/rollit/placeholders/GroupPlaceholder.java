@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -126,14 +125,38 @@ public class GroupPlaceholder extends PlaceholderExpansion {
 				StoredUserData data = StoredUserData.dataMap.get(player.getUniqueId());
 				if (identifier.equalsIgnoreCase("prefix")) {
 					return data.prefix;
+				} else if (identifier.equalsIgnoreCase("group_weight")) {
+					return data.weight;
 				}
 			}
 		}
-		return "" + ChatColor.DARK_GRAY;
+		return null;
 	}
 
 	private void parseUser(User user) {
 		if (user != null) {
+			// Get Weight
+			int weight = 0;
+			Map<String, Boolean> permissionsMap = user.getCachedData().getPermissionData(QueryOptions.defaultContextualOptions()).getPermissionMap();
+			for (String key : permissionsMap.keySet()) {
+				if (key.startsWith("rollit.prefixgroup") && permissionsMap.get(key)) {
+					String[] split = key.replace(".", " ").split(" ");
+					try {
+						String data = split[split.length - 1];
+						int value = Integer.parseInt(data);
+						if (value > weight) {
+							weight = value;
+						}
+					} catch (Exception e) {
+						plugin.getLogger().warning("Node failed to parse for prefix group: " + key);
+						e.printStackTrace();
+					}
+				}
+			}
+			if (weight >= 100) {
+				weight -= 100;
+			}
+
 			// Get Prefix
 			String prefix = "";
 			String finalKey = user.getCachedData().getMetaData(QueryOptions.defaultContextualOptions()).getPrefix();
@@ -144,7 +167,7 @@ public class GroupPlaceholder extends PlaceholderExpansion {
 				prefix = "" + ChatColor.DARK_GRAY;
 			}
 
-			new StoredUserData(user.getUniqueId(), prefix);
+			new StoredUserData(user.getUniqueId(), "" + weight, prefix);
 		}
 	}
 }
