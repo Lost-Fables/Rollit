@@ -23,6 +23,7 @@ public final class Rollit extends JavaPlugin {
     private static Rollit instance;
     private List<String> sitBlocks;
     private Map<UUID, Location> rangePlayers;
+    private Map<UUID, Map<Integer, Player>> turnOrders;
     private int rollCap;
     private int showDistance;
     private int rollDistance;
@@ -44,6 +45,7 @@ public final class Rollit extends JavaPlugin {
         rangeDistance = getConfig().getInt("range_distance");
         sitBlocks = getConfig().getStringList("sit_blocks");
         rangePlayers = new HashMap<>();
+        turnOrders = new HashMap<>();
 
         // Register our Placeholders if PlaceholderAPI is enabled
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -56,6 +58,7 @@ public final class Rollit extends JavaPlugin {
         Commands.build(getCommand("invitem"), () -> new InventoryItemCommands(this));
         Commands.build(getCommand("rollit"), () -> new RollitCommands(this));
         Commands.build(getCommand("distance"), () -> new DistanceCommand(this));
+        Commands.build(getCommand("TO"), () -> new TurnOrderCommand(this));
 
         new InventoryItemHandler();
 
@@ -80,6 +83,10 @@ public final class Rollit extends JavaPlugin {
         }
         return mats;
 
+    }
+
+    public Map<UUID, Map<Integer, Player>> getTurnOrders() {
+        return turnOrders;
     }
 
     public int getRangeDistance() {
