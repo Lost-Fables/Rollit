@@ -7,6 +7,7 @@ import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.query.QueryOptions;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -111,14 +112,16 @@ public class GroupPlaceholder extends PlaceholderExpansion {
 	@Override
 	public String onPlaceholderRequest(Player player, String identifier){
 		if (player != null) {
-
-			if (identifier.equalsIgnoreCase("group_weight")) {
-				// Get Weight
-				int weight = 0;
-				RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-				if (provider != null) {
-					LuckPerms api = provider.getProvider();
-					User user = api.getUserManager().getUser(player.getUniqueId());
+			RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+			if (provider != null) {
+				LuckPerms api = provider.getProvider();
+				User user = api.getUserManager().getUser(player.getUniqueId());
+				if (user == null) {
+					api.getUserManager().loadUser(player.getUniqueId());
+				}
+				if (identifier.equalsIgnoreCase("group_weight")) {
+					// Get Weight
+					int weight = 0;
 					if (user != null) {
 						Map<String, Boolean> permissionsMap = user.getCachedData().getPermissionData(QueryOptions.defaultContextualOptions()).getPermissionMap();
 						for (String key : permissionsMap.keySet()) {
@@ -137,22 +140,23 @@ public class GroupPlaceholder extends PlaceholderExpansion {
 							}
 						}
 					}
-				}
-				return "" + weight;
-			} else if (identifier.equalsIgnoreCase("prefix")) {
-				// Get Prefix
-				String output = "";
-				User user = LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId());
-				if (user != null) {
-					String finalKey = user.getCachedData().getMetaData(QueryOptions.defaultContextualOptions()).getPrefix();
-					if (finalKey != null) {
-						output = org.bukkit.ChatColor.translateAlternateColorCodes('&', finalKey);
-						output = org.bukkit.ChatColor.getLastColors(output);
+					return "" + weight;
+				} else if (identifier.equalsIgnoreCase("prefix")) {
+					// Get Prefix
+					String output = "";
+					if (user != null) {
+						String finalKey = user.getCachedData().getMetaData(QueryOptions.defaultContextualOptions()).getPrefix();
+						if (finalKey != null) {
+							output = org.bukkit.ChatColor.translateAlternateColorCodes('&', finalKey);
+							output = org.bukkit.ChatColor.getLastColors(output);
+						}
+					} else {
+						output = "" + ChatColor.DARK_GRAY;
 					}
+					return output;
 				}
-				return output;
-			}
 
+			}
 		}
 
 		return "";
