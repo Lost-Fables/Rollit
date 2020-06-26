@@ -112,7 +112,7 @@ public class GroupPlaceholder extends PlaceholderExpansion {
 	 * @return possibly-null String of the requested identifier.
 	 */
 	@Override
-	public String onPlaceholderRequest(Player player, String identifier){
+	public String onPlaceholderRequest(Player player, String identifier) {
 		if (player != null) {
 			RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 			if (provider != null) {
@@ -130,8 +130,7 @@ public class GroupPlaceholder extends PlaceholderExpansion {
 				}
 			}
 		}
-
-		return "";
+		return null;
 	}
 
 	private void parseUser(User user) {

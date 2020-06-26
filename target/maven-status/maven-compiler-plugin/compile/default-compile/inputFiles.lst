@@ -2,7 +2,6 @@ C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\ut
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\inventoryitems\InventoryItem.java
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\RollitCommands.java
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\listeners\FreeSilktouchListener.java
-C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\GroupPlaceholder.java
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\inventoryitems\Sizes.java
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\Rollit.java
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\TurnOrderCommand.java
@@ -11,5 +10,7 @@ C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\in
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\listeners\BonemealListener.java
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\enums\InventoryItemType.java
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\RollCommand.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\placeholders\StoredUserData.java
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\utilitycommands\DistanceCommand.java
 C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\inventoryitems\InventoryItemCommands.java
+C:\Users\Korvi\IdeaProjects\Rollit\src\main\java\net\lostfables\lughgk\rollit\placeholders\GroupPlaceholder.java
