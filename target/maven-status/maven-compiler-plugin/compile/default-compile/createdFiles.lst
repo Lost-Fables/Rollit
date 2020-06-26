@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-net\lostfables\lughgk\rollit\enums\InventoryItemType.class
-=======
->>>>>>> cfb87ff64b1361d4d3031463d3791527f0006423
 net\lostfables\lughgk\rollit\utilitycommands\DistanceCommand.class
 net\lostfables\lughgk\rollit\utilitycommands\ShowCommand.class
 net\lostfables\lughgk\rollit\inventoryitems\InventoryItem.class
 net\lostfables\lughgk\rollit\listeners\BonemealListener.class
-<<<<<<< HEAD
-=======
 net\lostfables\lughgk\rollit\inventoryitems\InventoryItemType.class
->>>>>>> cfb87ff64b1361d4d3031463d3791527f0006423
+net\lostfables\lughgk\rollit\listeners\FreeSilktouchListener.class
 net\lostfables\lughgk\rollit\Rollit.class
 net\lostfables\lughgk\rollit\utilitycommands\SitCommand.class
 net\lostfables\lughgk\rollit\inventoryitems\InventoryItemCommands.class
