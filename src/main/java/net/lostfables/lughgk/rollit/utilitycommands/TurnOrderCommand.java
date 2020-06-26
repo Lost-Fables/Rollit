@@ -31,6 +31,7 @@ public class TurnOrderCommand extends CommandTemplate implements Listener {
         Score score = obj.getScore("=-=-=-=-=-=-=-=-=");
         score.setScore(3);
         player.setScoreboard(board);
+        // TODO You can't change the scoreboard or you're going to fuck up persona names.
     }
 
     @Cmd(value = "Starts a turn order.", permission = Rollit.BASE_PERMISSION + "." + BASE_TURNORDER_PERMISSION + ".start")

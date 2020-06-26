@@ -43,6 +43,8 @@
     <orderEntry type="library" name="Maven: com.comphenix.executors:BukkitExecutors:1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.49.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.49.Final" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.luckperms:api:5.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: me.clip:placeholderapi:2.9.2" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-all:4.1.49.Final" level="project" />
   </component>
 </module>

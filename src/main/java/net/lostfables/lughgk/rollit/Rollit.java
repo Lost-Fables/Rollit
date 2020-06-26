@@ -3,14 +3,15 @@ package net.lostfables.lughgk.rollit;
 import co.lotc.core.bukkit.command.Commands;
 import net.lostfables.lughgk.rollit.listeners.BonemealListener;
 import net.lostfables.lughgk.rollit.listeners.FreeSilktouchListener;
+import net.lostfables.lughgk.rollit.placeholders.GroupPlaceholder;
 import net.lostfables.lughgk.rollit.utilitycommands.*;
 import net.lostfables.lughgk.rollit.inventoryitems.InventoryItemCommands;
 import net.lostfables.lughgk.rollit.inventoryitems.InventoryItemHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,11 @@ public final class Rollit extends JavaPlugin {
         sitBlocks = getConfig().getStringList("sit_blocks");
         rangePlayers = new HashMap<>();
         turnOrders = new HashMap<>();
+
+        // Register our Placeholders if PlaceholderAPI is enabled
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new GroupPlaceholder(this).register();
+        }
 
         new RollCommand();
         new ShowCommand();
