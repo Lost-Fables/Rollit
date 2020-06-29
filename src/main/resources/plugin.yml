@@ -3,6 +3,7 @@ version: ${project.version}
 main: net.lostfables.lughgk.rollit.Rollit
 api-version: 1.13
 depend: [Tythan]
+softdepend: [PlaceholderAPI]
 commands:
   roll:
     description: Rolls some dice
