@@ -3,67 +3,68 @@ package net.lostfables.lughgk.rollit.listeners;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.EnumSet;
+
 public class FreeSilktouchListener implements Listener {
 
-	private Material[] mats = {
-			Material.ICE,
-			Material.BLUE_ICE,
-			Material.PACKED_ICE,
-			Material.BOOKSHELF,
-			Material.GLASS,
-			Material.GLASS_PANE,
-			Material.BLACK_STAINED_GLASS,
-			Material.BLACK_STAINED_GLASS_PANE,
-			Material.RED_STAINED_GLASS,
-			Material.RED_STAINED_GLASS_PANE,
-			Material.GREEN_STAINED_GLASS,
-			Material.GREEN_STAINED_GLASS_PANE,
-			Material.BROWN_STAINED_GLASS,
-			Material.BROWN_STAINED_GLASS_PANE,
-			Material.BLUE_STAINED_GLASS,
-			Material.BLUE_STAINED_GLASS_PANE,
-			Material.PURPLE_STAINED_GLASS,
-			Material.PURPLE_STAINED_GLASS_PANE,
-			Material.CYAN_STAINED_GLASS,
-			Material.CYAN_STAINED_GLASS_PANE,
-			Material.LIGHT_GRAY_STAINED_GLASS,
-			Material.LIGHT_GRAY_STAINED_GLASS_PANE,
-			Material.GRAY_STAINED_GLASS,
-			Material.GRAY_STAINED_GLASS_PANE,
-			Material.PINK_STAINED_GLASS,
-			Material.PINK_STAINED_GLASS_PANE,
-			Material.LIME_STAINED_GLASS,
-			Material.LIME_STAINED_GLASS_PANE,
-			Material.YELLOW_STAINED_GLASS,
-			Material.YELLOW_STAINED_GLASS_PANE,
-			Material.LIGHT_BLUE_STAINED_GLASS,
-			Material.LIGHT_BLUE_STAINED_GLASS_PANE,
-			Material.MAGENTA_STAINED_GLASS,
-			Material.MAGENTA_STAINED_GLASS_PANE,
-			Material.ORANGE_STAINED_GLASS,
-			Material.ORANGE_STAINED_GLASS_PANE,
-			Material.WHITE_STAINED_GLASS,
-			Material.WHITE_STAINED_GLASS_PANE
-	};
+	private static EnumSet<Material> mats;
+	private static ItemStack silkPick = new ItemStack(Material.DIAMOND_PICKAXE);
+	static {
+		silkPick.addEnchantment(Enchantment.SILK_TOUCH, 1);
+
+		mats = EnumSet.of(Material.ICE);
+		mats.add(Material.BLUE_ICE);
+		mats.add(Material.PACKED_ICE);
+		mats.add(Material.BOOKSHELF);
+		mats.add(Material.GLASS);
+		mats.add(Material.GLASS_PANE);
+		mats.add(Material.BLACK_STAINED_GLASS);
+		mats.add(Material.BLACK_STAINED_GLASS_PANE);
+		mats.add(Material.RED_STAINED_GLASS);
+		mats.add(Material.RED_STAINED_GLASS_PANE);
+		mats.add(Material.GREEN_STAINED_GLASS);
+		mats.add(Material.GREEN_STAINED_GLASS_PANE);
+		mats.add(Material.BROWN_STAINED_GLASS);
+		mats.add(Material.BROWN_STAINED_GLASS_PANE);
+		mats.add(Material.BLUE_STAINED_GLASS);
+		mats.add(Material.BLUE_STAINED_GLASS_PANE);
+		mats.add(Material.PURPLE_STAINED_GLASS);
+		mats.add(Material.PURPLE_STAINED_GLASS_PANE);
+		mats.add(Material.CYAN_STAINED_GLASS);
+		mats.add(Material.CYAN_STAINED_GLASS_PANE);
+		mats.add(Material.LIGHT_GRAY_STAINED_GLASS);
+		mats.add(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
+		mats.add(Material.GRAY_STAINED_GLASS);
+		mats.add(Material.GRAY_STAINED_GLASS_PANE);
+		mats.add(Material.PINK_STAINED_GLASS);
+		mats.add(Material.PINK_STAINED_GLASS_PANE);
+		mats.add(Material.LIME_STAINED_GLASS);
+		mats.add(Material.LIME_STAINED_GLASS_PANE);
+		mats.add(Material.YELLOW_STAINED_GLASS);
+		mats.add(Material.YELLOW_STAINED_GLASS_PANE);
+		mats.add(Material.LIGHT_BLUE_STAINED_GLASS);
+		mats.add(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
+		mats.add(Material.MAGENTA_STAINED_GLASS);
+		mats.add(Material.MAGENTA_STAINED_GLASS_PANE);
+		mats.add(Material.ORANGE_STAINED_GLASS);
+		mats.add(Material.ORANGE_STAINED_GLASS_PANE);
+		mats.add(Material.WHITE_STAINED_GLASS);
+		mats.add(Material.WHITE_STAINED_GLASS_PANE);
+	}
 
 	@EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent e) {
 		if (!e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-			for (Material mat : mats) {
-				if (e.getBlock().getType().equals(mat)) {
-					e.setCancelled(true);
-					ItemStack item = new ItemStack(mat);
-					Location loc = e.getBlock().getLocation();
-					loc.getBlock().setType(Material.AIR);
-					loc.getWorld().dropItemNaturally(loc, item);
-					break;
-				}
+			if (mats.contains(e.getBlock().getType())) {
+				e.setCancelled(true);
+				e.getBlock().breakNaturally(silkPick);
 			}
 		}
 	}
