@@ -114,13 +114,6 @@ public class GroupPlaceholder extends PlaceholderExpansion {
 	@Override
 	public String onPlaceholderRequest(Player player, String identifier) {
 		if (player != null) {
-			RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-			if (provider != null) {
-				LuckPerms api = provider.getProvider();
-				CompletableFuture<User> userFuture = api.getUserManager().loadUser(player.getUniqueId());
-				userFuture.thenAcceptAsync(this::parseUser);
-			}
-
 			if (StoredUserData.dataMap.containsKey(player.getUniqueId())) {
 				StoredUserData data = StoredUserData.dataMap.get(player.getUniqueId());
 				if (identifier.equalsIgnoreCase("prefix")) {
@@ -128,6 +121,13 @@ public class GroupPlaceholder extends PlaceholderExpansion {
 				} else if (identifier.equalsIgnoreCase("group_weight")) {
 					return data.weight;
 				}
+			}
+
+			RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+			if (provider != null) {
+				LuckPerms api = provider.getProvider();
+				CompletableFuture<User> userFuture = api.getUserManager().loadUser(player.getUniqueId());
+				userFuture.thenAcceptAsync(this::parseUser);
 			}
 		}
 		return null;
