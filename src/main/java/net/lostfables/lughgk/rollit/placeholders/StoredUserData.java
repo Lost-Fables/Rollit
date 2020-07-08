@@ -29,7 +29,7 @@ public class StoredUserData {
 					dataMap.remove(key);
 				}
 			}
-		}.runTaskTimerAsynchronously(Rollit.get(), 0, 1200);
+		}.runTaskTimerAsynchronously(Rollit.get(), 0, MAX_TIME_PER_UPDATE);
 	}
 
 	protected static boolean needsToRefresh(UUID uuid) {
