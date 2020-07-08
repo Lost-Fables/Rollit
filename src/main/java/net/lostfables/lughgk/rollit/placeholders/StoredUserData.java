@@ -18,10 +18,9 @@ public class StoredUserData {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				long currentTime = System.currentTimeMillis();
 				ArrayList<UUID> keysForRemoval = new ArrayList<>();
 				for (UUID key : dataMap.keySet()) {
-					long timeSinceUpdate = currentTime - dataMap.get(key).lastUpdated;
+					long timeSinceUpdate = System.currentTimeMillis() - dataMap.get(key).lastUpdated;
 					if (timeSinceUpdate > MAX_TIME_PER_UPDATE) {
 						keysForRemoval.add(key);
 					}
@@ -31,6 +30,17 @@ public class StoredUserData {
 				}
 			}
 		}.runTaskTimerAsynchronously(Rollit.get(), 0, 1200);
+	}
+
+	protected static boolean needsToRefresh(UUID uuid) {
+		boolean output = !dataMap.containsKey(uuid);
+		if (!output) {
+			long timeSinceUpdate = System.currentTimeMillis() - dataMap.get(uuid).lastUpdated;
+			if (timeSinceUpdate > (3*MAX_TIME_PER_UPDATE/4)) {
+				output = true;
+			}
+		}
+		return output;
 	}
 
 	protected String weight;
