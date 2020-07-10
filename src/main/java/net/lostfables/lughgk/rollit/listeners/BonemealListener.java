@@ -15,32 +15,34 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.FlowerPot;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.EnumSet;
+
 public final class BonemealListener implements Listener {
 
 	// Sunflower, Lillac, Rose bush, and Peony are all done by Vanilla. Do not do Grass/Fern/Seagrass (short), Wither_Rose, or Mushrooms.
-	private static final Material[] GROWABLES = {
-			Material.DANDELION,
-			Material.POPPY,
-			Material.ALLIUM,
-			Material.BLUE_ORCHID,
-			Material.ORANGE_TULIP,
-			Material.RED_TULIP,
-			Material.PINK_TULIP,
-			Material.WHITE_TULIP,
-			Material.AZURE_BLUET,
-			Material.OXEYE_DAISY,
-			Material.DEAD_BUSH,
-			Material.LILY_PAD,
-			Material.VINE,
-			Material.SEA_PICKLE,
-			Material.CACTUS
+	private static final EnumSet<Material> GROWABLES = EnumSet.of(Material.DANDELION);
+	static {
+			GROWABLES.add(Material.POPPY);
+			GROWABLES.add(Material.ALLIUM);
+			GROWABLES.add(Material.BLUE_ORCHID);
+			GROWABLES.add(Material.ORANGE_TULIP);
+			GROWABLES.add(Material.RED_TULIP);
+			GROWABLES.add(Material.PINK_TULIP);
+			GROWABLES.add(Material.WHITE_TULIP);
+			GROWABLES.add(Material.AZURE_BLUET);
+			GROWABLES.add(Material.OXEYE_DAISY);
+			GROWABLES.add(Material.DEAD_BUSH);
+			GROWABLES.add(Material.LILY_PAD);
+			GROWABLES.add(Material.VINE);
+			GROWABLES.add(Material.SEA_PICKLE);
+			GROWABLES.add(Material.CACTUS);
 	};
 
 	// Things that we drop a short version of instead of the tall version.
-	private static final Material[] TALL_BOIS = {
-			Material.TALL_GRASS,
-			Material.TALL_SEAGRASS,
-			Material.LARGE_FERN
+	private static final EnumSet<Material> TALL_BOIS = EnumSet.of(Material.TALL_GRASS);
+	static {
+			TALL_BOIS.add(Material.TALL_SEAGRASS);
+			TALL_BOIS.add(Material.LARGE_FERN);
 	};
 
 	@EventHandler (priority = EventPriority.LOWEST, ignoreCancelled = false)
@@ -71,16 +73,7 @@ public final class BonemealListener implements Listener {
 
 	private boolean isFlower(Material mat){
 		if (mat != null) {
-			for (Material thisMat : GROWABLES) {
-				if (mat.equals(thisMat)) {
-					return true;
-				}
-			}
-			for (Material thisMat : TALL_BOIS) {
-				if (mat.equals(thisMat)) {
-					return true;
-				}
-			}
+			return (GROWABLES.contains(mat) || TALL_BOIS.contains(mat));
 		}
 
 		return false;

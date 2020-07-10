@@ -14,8 +14,8 @@ import java.util.EnumSet;
 
 public class FreeSilktouchListener implements Listener {
 
-	private static EnumSet<Material> mats;
-	private static ItemStack silkPick = new ItemStack(Material.DIAMOND_PICKAXE);
+	private static final EnumSet<Material> mats;
+	private static final ItemStack silkPick = new ItemStack(Material.DIAMOND_PICKAXE);
 	static {
 		silkPick.addEnchantment(Enchantment.SILK_TOUCH, 1);
 
