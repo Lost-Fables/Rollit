@@ -80,7 +80,7 @@ public final class BonemealListener implements Listener {
 
 	private boolean isFlower(Material mat){
 		if (mat != null) {
-			return (NORMIES.contains(mat) || POTTED_BOIS.containsValue(mat) || TALL_BOIS.containsKey(mat));
+			return (NORMIES.contains(mat) || POTTED_BOIS.containsKey(mat) || POTTED_BOIS.containsValue(mat) || TALL_BOIS.containsKey(mat));
 		}
 		return false;
 	}
