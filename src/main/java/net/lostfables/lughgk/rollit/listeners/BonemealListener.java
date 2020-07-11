@@ -1,6 +1,7 @@
 package net.lostfables.lughgk.rollit.listeners;
 
 import org.bukkit.Effect;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -51,7 +52,7 @@ public final class BonemealListener implements Listener {
 	};
 
 	@EventHandler (priority = EventPriority.LOWEST, ignoreCancelled = false)
-	public void PlayerInteractEvent(PlayerInteractEvent event){
+	public void PlayerInteractEvent(PlayerInteractEvent event) {
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			Player player = event.getPlayer();
 			Block block = event.getClickedBlock();
@@ -62,14 +63,15 @@ public final class BonemealListener implements Listener {
 				item = player.getInventory().getItemInOffHand();
 			}
 
-			if (block != null && player.hasPermission("flowers.use") && isBoneMeal(item) && isFlower(dePot(block.getType(), event))) {
+			if (block != null && player.hasPermission("flowers.use") && isBoneMeal(item) && isFlower(block.getType())) {
 				event.setCancelled(true);
-				consumeItem(item);
+				if (!player.getGameMode().equals(GameMode.CREATIVE)) {
+					consumeItem(item);
+				}
 				createFlower(block);
 				block.getWorld().playEffect(block.getLocation(), Effect.VILLAGER_PLANT_GROW, 6);
 			}
 		}
-
 	}
 
 	private boolean isBoneMeal(ItemStack item){
@@ -80,15 +82,11 @@ public final class BonemealListener implements Listener {
 		if (mat != null) {
 			return (NORMIES.contains(mat) || POTTED_BOIS.containsValue(mat) || TALL_BOIS.containsKey(mat));
 		}
-
 		return false;
 	}
 
-	private Material dePot(Material mat, PlayerInteractEvent event) {
+	private Material dePot(Material mat) {
 		if (POTTED_BOIS.containsKey(mat)) {
-			if (event != null) {
-				event.setCancelled(true);
-			}
 			return POTTED_BOIS.get(mat);
 		}
 		return mat;
@@ -106,7 +104,7 @@ public final class BonemealListener implements Listener {
 	}
 
 	public void createFlower(Block block){
-		ItemStack flower = new ItemStack(shorten(dePot(block.getBlockData().getMaterial(), null)));
+		ItemStack flower = new ItemStack(shorten(dePot(block.getBlockData().getMaterial())));
 		block.getWorld().dropItemNaturally(block.getLocation(), flower);
 	}
 }
