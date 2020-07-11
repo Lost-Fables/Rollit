@@ -1,7 +1,6 @@
 package net.lostfables.lughgk.rollit.listeners;
 
 import org.bukkit.Effect;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -12,37 +11,43 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.FlowerPot;
-import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.EnumMap;
 import java.util.EnumSet;
 
 public final class BonemealListener implements Listener {
 
-	// Sunflower, Lillac, Rose bush, and Peony are all done by Vanilla. Do not do Grass/Fern/Seagrass (short), Wither_Rose, or Mushrooms.
-	private static final EnumSet<Material> GROWABLES = EnumSet.of(Material.DANDELION);
+	// Things that don't have a tall or potted version.
+	private static final EnumSet<Material> NORMIES;
 	static {
-			GROWABLES.add(Material.POPPY);
-			GROWABLES.add(Material.ALLIUM);
-			GROWABLES.add(Material.BLUE_ORCHID);
-			GROWABLES.add(Material.ORANGE_TULIP);
-			GROWABLES.add(Material.RED_TULIP);
-			GROWABLES.add(Material.PINK_TULIP);
-			GROWABLES.add(Material.WHITE_TULIP);
-			GROWABLES.add(Material.AZURE_BLUET);
-			GROWABLES.add(Material.OXEYE_DAISY);
-			GROWABLES.add(Material.DEAD_BUSH);
-			GROWABLES.add(Material.LILY_PAD);
-			GROWABLES.add(Material.VINE);
-			GROWABLES.add(Material.SEA_PICKLE);
-			GROWABLES.add(Material.CACTUS);
+		NORMIES = EnumSet.of(Material.LILY_PAD);
+		NORMIES.add(Material.VINE);
+		NORMIES.add(Material.SEA_PICKLE);
+	}
+
+	// Sunflower, Lillac, Rose bush, and Peony are all done by Vanilla. Do not do Grass/Fern/Seagrass (short), Wither_Rose, or Mushrooms.
+	private static final EnumMap<Material, Material> POTTED_BOIS = new EnumMap<>(Material.class); // Potted, Normal
+	static {
+		POTTED_BOIS.put(Material.POTTED_DANDELION, Material.DANDELION);
+		POTTED_BOIS.put(Material.POTTED_POPPY, Material.POPPY);
+		POTTED_BOIS.put(Material.POTTED_ALLIUM, Material.ALLIUM);
+		POTTED_BOIS.put(Material.POTTED_BLUE_ORCHID, Material.BLUE_ORCHID);
+		POTTED_BOIS.put(Material.POTTED_ORANGE_TULIP, Material.ORANGE_TULIP);
+		POTTED_BOIS.put(Material.POTTED_RED_TULIP, Material.RED_TULIP);
+		POTTED_BOIS.put(Material.POTTED_PINK_TULIP, Material.PINK_TULIP);
+		POTTED_BOIS.put(Material.POTTED_WHITE_TULIP, Material.WHITE_TULIP);
+		POTTED_BOIS.put(Material.POTTED_AZURE_BLUET, Material.AZURE_BLUET);
+		POTTED_BOIS.put(Material.POTTED_OXEYE_DAISY, Material.OXEYE_DAISY);
+		POTTED_BOIS.put(Material.POTTED_DEAD_BUSH, Material.DEAD_BUSH);
+		POTTED_BOIS.put(Material.POTTED_CACTUS, Material.CACTUS);
 	};
 
 	// Things that we drop a short version of instead of the tall version.
-	private static final EnumSet<Material> TALL_BOIS = EnumSet.of(Material.TALL_GRASS);
+	private static final EnumMap<Material, Material> TALL_BOIS = new EnumMap<>(Material.class); // Tall, Short
 	static {
-			TALL_BOIS.add(Material.TALL_SEAGRASS);
-			TALL_BOIS.add(Material.LARGE_FERN);
+		TALL_BOIS.put(Material.TALL_GRASS, Material.GRASS);
+		TALL_BOIS.put(Material.TALL_SEAGRASS, Material.SEAGRASS);
+		TALL_BOIS.put(Material.LARGE_FERN, Material.FERN);
 	};
 
 	@EventHandler (priority = EventPriority.LOWEST, ignoreCancelled = false)
@@ -73,35 +78,25 @@ public final class BonemealListener implements Listener {
 
 	private boolean isFlower(Material mat){
 		if (mat != null) {
-			return (GROWABLES.contains(mat) || TALL_BOIS.contains(mat));
+			return (NORMIES.contains(mat) || POTTED_BOIS.containsValue(mat) || TALL_BOIS.containsKey(mat));
 		}
 
 		return false;
 	}
 
 	private Material dePot(Material mat, PlayerInteractEvent event) {
-		if (mat != null && mat.toString().startsWith("POTTED_")) {
+		if (POTTED_BOIS.containsKey(mat)) {
 			if (event != null) {
 				event.setCancelled(true);
 			}
-			String contents = mat.toString().replaceAll("POTTED_", "");
-			for (Material thisMat : TALL_BOIS) {
-				if (thisMat.toString().endsWith(contents)) {
-					return thisMat;
-				}
-			}
-			return Material.getMaterial(contents);
+			return POTTED_BOIS.get(mat);
 		}
 		return mat;
 	}
 
 	private Material shorten(Material mat) {
-		if (mat.toString().startsWith("TALL_")) {
-			String contents = mat.toString().replaceAll("TALL_", "");
-			return Material.getMaterial(contents);
-		} else if (mat.toString().startsWith("LARGE_")) {
-			String contents = mat.toString().replaceAll("LARGE_", "");
-			return Material.getMaterial(contents);
+		if (TALL_BOIS.containsKey(mat)) {
+			return TALL_BOIS.get(mat);
 		}
 		return mat;
 	}
