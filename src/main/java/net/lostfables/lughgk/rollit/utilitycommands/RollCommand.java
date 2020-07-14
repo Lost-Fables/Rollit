@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RollCommand implements CommandExecutor {
 
@@ -110,7 +111,8 @@ public class RollCommand implements CommandExecutor {
         StringBuilder rolls = new StringBuilder();
         int total = 0;
         for (int index = 0; index < numOfDice(rollString); index++) {
-            int roll = (int) Math.floor(Math.random() * (dieFace(rollString) - 1 + 1) + 1);
+            int roll = ThreadLocalRandom.current().nextInt(dieFace(rollString)) + 1;
+            //int roll = (int) Math.floor(Math.random() * (dieFace(rollString) - 1 + 1) + 1);
             rolls.append(ChatColor.DARK_AQUA).append("[").append(ChatColor.WHITE).append(roll).append(ChatColor.DARK_AQUA).append("] ");
             total += roll;
         }

@@ -1,7 +1,5 @@
 package net.lostfables.lughgk.rollit.placeholders;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import net.lostfables.lughgk.rollit.Rollit;
 import org.bukkit.scheduler.BukkitRunnable;
 
