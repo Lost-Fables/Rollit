@@ -24,6 +24,7 @@ public final class BonemealListener implements Listener {
 		NORMIES = EnumSet.of(Material.LILY_PAD);
 		NORMIES.add(Material.VINE);
 		NORMIES.add(Material.SEA_PICKLE);
+		NORMIES.add(Material.NETHER_SPROUTS);
 	}
 
 	// Sunflower, Lillac, Rose bush, and Peony are all done by Vanilla. Do not do Grass/Fern/Seagrass (short), Wither_Rose, or Mushrooms.
@@ -31,14 +32,18 @@ public final class BonemealListener implements Listener {
 	static {
 		POTTED_BOIS.put(Material.POTTED_DANDELION, Material.DANDELION);
 		POTTED_BOIS.put(Material.POTTED_POPPY, Material.POPPY);
-		POTTED_BOIS.put(Material.POTTED_ALLIUM, Material.ALLIUM);
 		POTTED_BOIS.put(Material.POTTED_BLUE_ORCHID, Material.BLUE_ORCHID);
-		POTTED_BOIS.put(Material.POTTED_ORANGE_TULIP, Material.ORANGE_TULIP);
-		POTTED_BOIS.put(Material.POTTED_RED_TULIP, Material.RED_TULIP);
-		POTTED_BOIS.put(Material.POTTED_PINK_TULIP, Material.PINK_TULIP);
-		POTTED_BOIS.put(Material.POTTED_WHITE_TULIP, Material.WHITE_TULIP);
+		POTTED_BOIS.put(Material.POTTED_ALLIUM, Material.ALLIUM);
 		POTTED_BOIS.put(Material.POTTED_AZURE_BLUET, Material.AZURE_BLUET);
+		POTTED_BOIS.put(Material.POTTED_RED_TULIP, Material.RED_TULIP);
+		POTTED_BOIS.put(Material.POTTED_ORANGE_TULIP, Material.ORANGE_TULIP);
+		POTTED_BOIS.put(Material.POTTED_WHITE_TULIP, Material.WHITE_TULIP);
+		POTTED_BOIS.put(Material.POTTED_PINK_TULIP, Material.PINK_TULIP);
 		POTTED_BOIS.put(Material.POTTED_OXEYE_DAISY, Material.OXEYE_DAISY);
+		POTTED_BOIS.put(Material.POTTED_CORNFLOWER, Material.CORNFLOWER);
+		POTTED_BOIS.put(Material.POTTED_LILY_OF_THE_VALLEY, Material.LILY_OF_THE_VALLEY);
+		POTTED_BOIS.put(Material.POTTED_CRIMSON_ROOTS, Material.CRIMSON_ROOTS);
+		POTTED_BOIS.put(Material.POTTED_WARPED_ROOTS, Material.WARPED_ROOTS);
 		POTTED_BOIS.put(Material.POTTED_DEAD_BUSH, Material.DEAD_BUSH);
 		POTTED_BOIS.put(Material.POTTED_CACTUS, Material.CACTUS);
 	};
