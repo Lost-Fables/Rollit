@@ -9,12 +9,14 @@ import net.luckperms.api.model.user.User;
 import net.luckperms.api.query.QueryOptions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -112,19 +114,20 @@ public class GroupPlaceholder extends PlaceholderExpansion {
 	 * @return possibly-null String of the requested identifier.
 	 */
 	@Override
-	public String onPlaceholderRequest(Player player, String identifier) {
+	public String onRequest(OfflinePlayer player, String identifier) {
 		if (player != null) {
-			if (StoredUserData.needsToRefresh(player.getUniqueId())) {
+			UUID uuid = player.getUniqueId();
+			if (StoredUserData.needsToRefresh(uuid)) {
 				RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
 				if (provider != null) {
 					LuckPerms api = provider.getProvider();
-					CompletableFuture<User> userFuture = api.getUserManager().loadUser(player.getUniqueId());
+					CompletableFuture<User> userFuture = api.getUserManager().loadUser(uuid);
 					userFuture.thenAcceptAsync(this::parseUser);
 				}
 			}
 
-			if (StoredUserData.dataMap.containsKey(player.getUniqueId())) {
-				StoredUserData data = StoredUserData.dataMap.get(player.getUniqueId());
+			if (StoredUserData.dataMap.containsKey(uuid)) {
+				StoredUserData data = StoredUserData.dataMap.get(uuid);
 				if (identifier.equalsIgnoreCase("prefix")) {
 					return data.prefix;
 				} else if (identifier.equalsIgnoreCase("group_weight")) {
