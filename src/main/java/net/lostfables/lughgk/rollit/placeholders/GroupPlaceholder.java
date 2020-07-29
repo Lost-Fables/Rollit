@@ -1,6 +1,7 @@
 package net.lostfables.lughgk.rollit.placeholders;
 
 import co.lotc.core.bukkit.menu.Menu;
+import co.lotc.core.bukkit.util.ParseUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.lostfables.lughgk.rollit.Rollit;
 import net.luckperms.api.LuckPerms;
@@ -166,7 +167,7 @@ public class GroupPlaceholder extends PlaceholderExpansion {
 			String prefix = "";
 			String finalKey = user.getCachedData().getMetaData(QueryOptions.defaultContextualOptions()).getPrefix();
 			if (finalKey != null && finalKey.length() > 0) {
-				prefix = org.bukkit.ChatColor.translateAlternateColorCodes('&', finalKey);
+				prefix = ParseUtil.parseWithHexColors('&', finalKey);
 				prefix = org.bukkit.ChatColor.getLastColors(prefix);
 			} else {
 				prefix = "" + ChatColor.DARK_GRAY;
